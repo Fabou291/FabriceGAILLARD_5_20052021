@@ -1,15 +1,18 @@
 {
-  "name": "orinoco-backend",
+  "name": "orinoco",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sass": "sass --watch ./sass/main.scss:./public/css/styles.css"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "bootstrap-scss": "^5.0.1"
   }
 }
