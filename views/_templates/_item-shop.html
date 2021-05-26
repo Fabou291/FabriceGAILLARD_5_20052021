@@ -1,0 +1,18 @@
+<div class="col-12 p-3">
+    <div class="card card-item">
+        <div class="row">
+            <div class="col-4">
+                <a href=""><img class="card-item__thumb" src="${item.imageUrl}"  alt="${item.description}"></a>
+            </div>
+            <div class="col-8">
+                <div class="card-body">
+                    <h3 class="card-item__title fs-5"><a href="../item/item.html?_id=${item._id}">${item.name}</a></h5>
+                    <div>${ getStarsHTML(4) }</div>
+                    <span class="fs-5">${item.getParsedPrice()}</span>
+                    <p class="card-text">${item.description}</p>
+                    <button type="button" class="btn-sm btn-warning rounded-3">en savoir plus</button>
+                </div>
+            </div>
+        </div>
+    </div>                   
+</div>
