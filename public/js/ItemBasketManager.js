@@ -44,7 +44,7 @@ class ItemBasketManager {
      * @param {integer} quantity 
      */
     updateItemQuantity(index, quantity){
-        this.itemList[index].quantity = quantity;
+        this.itemList[index].quantity = parseInt(quantity);
 
         this.saveInLocalStorage();
     }
@@ -52,8 +52,8 @@ class ItemBasketManager {
     /**
      * @param {object} item 
      */
-    removeItem(item){
-        this.itemList.splice(this.getIndexItem(item),1);
+    removeItem(index){
+        this.itemList.splice(index,1);
         
         this.saveInLocalStorage();
     }
