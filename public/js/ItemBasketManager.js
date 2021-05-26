@@ -20,8 +20,6 @@ class ItemBasketManager {
     constructor(){
         let itemStorage = localStorage.getItem(LocalStorageBasketName);
         if(itemStorage !== null) this.itemList = JSON.parse(itemStorage);
-
-        this.saveInLocalStorage();
     }
     
 
@@ -65,6 +63,11 @@ class ItemBasketManager {
      */
     getIndexItem(item){
         return this.itemList.findIndex( element => (element.id == item.id && element.version == item.version ) )
+    }
+
+    getParsedTotal(){
+        let floatPrice = this.itemList.reduce((accumulator, item) => accumulator + item.quantity * (item.price/100).toFixed(2), 0 );
+        return new Intl.NumberFormat( 'fr-FR', { style: 'currency', currency: 'EUR' }).format(floatPrice);
     }
 
 }
