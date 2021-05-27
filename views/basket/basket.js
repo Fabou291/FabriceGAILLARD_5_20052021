@@ -1,6 +1,7 @@
 const pathServer = 'http://localhost:3000/api/cameras/';
 
 const itemBasketManager = new ItemBasketManager();
+let displayFormDelivery = document.getElementById('displayFormDelivery');
 let listCheckbox;
 
 async function fetchWithIdList(idList){
@@ -37,6 +38,13 @@ function updateTotal(){
 
 function updateSelectAllButton(allChecked){
     document.getElementById("deselectAll").innerHTML = (allChecked) ? 'Déselectionner tout' : 'Selectionner tout'; 
+}
+
+function updateButtonCmd(allUnChecked){
+    document.querySelectorAll('button[type="submit"]').forEach(button => {
+        if(allUnChecked) button.setAttribute('disabled','');
+        else button.removeAttribute('disabled','');
+    })
 }
 
 
@@ -80,7 +88,7 @@ else{
                             <input class="w-auto quantity" name="quantity" type="number" value="${itemBasket.quantity}" min=1 >                                          
                         </div>
                         <div class="col-auto">
-                            <button type="button" class="btn btn-link" data-id="${item._id}" class="deleteItemShop">supprimer</button>
+                            <button type="button" class="btn btn-link deleteItemShop" data-id="${item._id}" >supprimer</button>
                         </div>
                     </div>
                 </div>
@@ -88,8 +96,9 @@ else{
             </div>`;
 
         }
-        listCheckbox = document.querySelectorAll('input[type="checkbox"]');
+        listCheckbox = document.querySelectorAll('#formBasket input[type="checkbox"]');
         updateSelectAllButton(itemBasketManager.areAllSelected());
+        updateButtonCmd(itemBasketManager.areAllNotSelected())
         updateTotal();
         return listItem;
     })
@@ -123,9 +132,10 @@ else{
                 );
                 
                 item.parentNode.removeChild(item);
-                listCheckbox = document.querySelectorAll('input[type="checkbox"]');
+                listCheckbox = document.querySelectorAll('#formBasket input[type="checkbox"]');
 
                 updateSelectAllButton(itemBasketManager.areAllSelected());
+                updateButtonCmd(itemBasketManager.areAllNotSelected())
                 updateTotal();
             },false);
 
@@ -133,7 +143,7 @@ else{
     })
     .then(()=>{
         /**
-         * Gère l'evenement au lien/bouton **déselectionner tout**
+         * Gère **déselectionner tout**
          */
 
          document.getElementById('deselectAll').addEventListener('click',function(){
@@ -143,6 +153,7 @@ else{
                 itemBasketManager.updateSelected(i,!allChecked);
                 checkbox.checked = !allChecked;
                 updateSelectAllButton(!allChecked);
+                updateButtonCmd(itemBasketManager.areAllNotSelected())
                 updateTotal();
             }
             
@@ -151,18 +162,63 @@ else{
     })
     .then(()=>{
         /**
-         * Gère l'evenement des checkbox
+         * Gère les checkbox
          */   
 
         for (const [i, checkbox] of listCheckbox.entries()) {
             checkbox.addEventListener('change',function(){
                 itemBasketManager.updateSelected(i,checkbox.checked);
                 updateSelectAllButton(itemBasketManager.areAllSelected());
+                updateButtonCmd(itemBasketManager.areAllNotSelected())
                 updateTotal();
             },false);            
         }
         
 
+    })
+    .then(()=>{
+        /**
+         * Gère les boutons du formulaire
+         */
+
+        console.log(document.querySelectorAll('#formBasket button[type="submit"]'))
+
+        document.querySelectorAll('#formBasket button[type="submit"]').forEach(button => {
+            button.addEventListener('click',function(event){
+                event.preventDefault();
+                displayFormDelivery.classList.remove('d-none');
+                document.querySelector('body').classList.add('overflow-hidden')
+            },false)
+        })
+
+    })
+    .then(()=>{
+
+        /**
+         * Gère le display delivery
+         */
+
+        [ document.querySelector('.shut-zone'), document.querySelector('#shutButtonForm') ].forEach(element => {
+            element.addEventListener('click',function(event){
+                displayFormDelivery.classList.add('d-none');
+                document.querySelector('body').classList.remove('overflow-hidden')
+            },false)            
+        })
+
+    })
+    .then(()=>{
+        
+        /**
+         * Gère le button submit du form delivery
+         */
+        
+        displayFormDelivery.querySelector('button[type="submit"]').addEventListener('click',function(event){
+            event.preventDefault();
+
+            let formDelivery = displayFormDelivery.querySelector('form');
+            formDelivery.reportValidity();
+            formDelivery.classList.add('was-validated');
+        },false)
     })
     .catch(e => console.error(e))
 

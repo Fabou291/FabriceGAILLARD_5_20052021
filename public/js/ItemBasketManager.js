@@ -86,6 +86,12 @@ class ItemBasketManager {
         return allSelected;
     }
 
+    areAllNotSelected(){
+        let allNotSelected = true;
+        for (let i = 0; i< this.itemList.length; i++) allNotSelected &= !this.isSelected(i);
+        return allNotSelected;
+    }
+
 
 }
 

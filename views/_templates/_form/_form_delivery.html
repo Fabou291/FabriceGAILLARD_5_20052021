@@ -9,38 +9,25 @@
     <link rel="stylesheet" href="../../../../public/css/styles.css">
     <link rel="stylesheet" href="../../../../public/css/bootstrap-icons/bootstrap-icons.css">
         
-    <script src="../../../../public/js/vendors/bootstrap.min.js" defer></script>
+    <!--<script src="../../../../public/js/vendors/bootstrap.min.js" defer></script>-->
 
 </head>
 <body>
     
-    <!--
-        De quoi ai-je besoin ?
-
-        Pays/région             select disabled | country
-        Nom                     text pattern( ^[\p{L}'-]+$ ) | familyName
-        Prenom                  text pattern( ^[\p{L}'-]+$ ) | firstName
-        Adresse ligne 1         text | adressLine1
-        Adresse ligne 2         text | adressLine2
-        Ville                   text pattern( ^[\p{L}'-]+$ ) | town
-        Code postal             number min=5 max=5 | zipCode
-        Numéro de téléphone     tel pattern( ^0[\p{N}'-]{9}$ ) | phoneNumber
-
-
-        <div class="valid-feedback"> Looks good! </div>
-        class="form-control is-valid"
-    -->
 
     <div class="container">
         <section>
             <div class="row">
                 <div class="col-8 bg-light p-3 fs-5 m-auto d-flex">
                     Informations de livraison 
-                    <button class="btn btn-default ms-auto px-2"> <i class="bi bi-x"></i> </button>
+                    <button class="btn btn-default ms-auto px-2">
+                        <i class="bi bi-x"></i>
+                    </button>
                 </div>
                 <div class="col-8 m-auto p-3">
                     <h2>Informations de livraison</h2>
-                    <form class="row needs-validation" novalidate >
+                    <form id="formDelivery" class="row" novalidate>
+
                         <div class="col-12 mb-3">
                             <label for="country" class="mb-1" aria-label="Pays">Pays</label>
                             <select class="form-control" id="country" name="country" placeholder="Indiquez un pays" pattern="^[\p{L} '-]+$" disabled>
@@ -104,8 +91,11 @@
                             <input id="zipCode" name="zipCode" type="text" class="form-control" pattern="^[\p{N}]{5}$" minlength="5" maxlength="5"  required>
                             <div class="valid-feedback"> Looks good! </div>
                             <div class="invalid-feedback">
-                                <strong>Le code Postale n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
-                                Seul les caracètres numériques sont autorisés.
+                                <strong>Le code Postale n'a pas été renseigné, ou a été mal renseigné.</strong>
+                                <ul>
+                                    <li>Seul les caracètres numériques sont autorisés</li>
+                                    <li>Il doit contenir 5 chiffres</li>
+                                </ul>
                             </div>
                         </div>
         
@@ -114,8 +104,11 @@
                             <input id="phoneNumber" name="phoneNumber" type="tel" class="form-control" pattern="^0[\p{N}]{9}$" maxlength="10"   required>
                             <div class="valid-feedback"> Looks good! </div>
                             <div class="invalid-feedback">
-                                <strong>Le numéro de téléphone n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
-                                Seul les caracètres numériques sont autorisés.
+                                <strong>Le numéro de téléphone n'a pas été renseigné, ou a été mal renseigné.</strong>
+                                <ul>
+                                    <li>Seul les caracètres numériques sont autorisés</li>
+                                    <li>Il doit contenir 10 chiffres</li>
+                                </ul>
                             </div>
                         </div>
         
@@ -125,7 +118,9 @@
                             <div class="input-group has-validation ">
                                 <span class="input-group-text" id="inputGroupPrepend3">@</span>
                                 <input type="email" class="form-control" id="email" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback emailHelp" placeholder="df" required>
-                                <div id="validationServerUsernameFeedback" class="invalid-feedback"> Whooops! </div>
+                                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                    <strong>L'adresse email n'a pas été renseigné, ou a été mal renseigné.</strong>
+                                </div>
                                 <div id="validationServerUsernameFeedback" class="valid-feedback"> Looks good! </div>
                             </div>
                             <div id="emailHelp" class="form-text">Exemple : Phil@contat.fr</div>
@@ -159,30 +154,19 @@
                 </div>
             </div>       
         </section>
-        
-    
     </div>
 
 <script>
-    (function () {
-  'use strict'
 
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.needs-validation')
 
-  // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
 
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
+    document.getElementById('formDelivery').addEventListener('submit', function (event) {
+        event.preventDefault();
+        this.reportValidity();
+        this.classList.add('was-validated')
+    }, false)
+
+
 </script>
 
 </body>
