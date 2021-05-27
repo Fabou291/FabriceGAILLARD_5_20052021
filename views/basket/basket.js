@@ -80,7 +80,7 @@ else{
                             <input class="w-auto quantity" name="quantity" type="number" value="${itemBasket.quantity}" min=1 >                                          
                         </div>
                         <div class="col-auto">
-                            <a href="#" data-id="${item._id}" class="deleteItemShop">supprimer</a>
+                            <button type="button" class="btn btn-link" data-id="${item._id}" class="deleteItemShop">supprimer</button>
                         </div>
                     </div>
                 </div>
@@ -145,6 +145,7 @@ else{
                 updateSelectAllButton(!allChecked);
                 updateTotal();
             }
+            
         },false)
        
     })

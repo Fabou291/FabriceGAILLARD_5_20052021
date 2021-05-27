@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../../../../public/css/styles.css">
+    <link rel="stylesheet" href="../../../../public/css/bootstrap-icons/bootstrap-icons.css">
+        
+    <script src="../../../../public/js/vendors/bootstrap.min.js" defer></script>
+
+</head>
+<body>
+    
+    <!--
+        De quoi ai-je besoin ?
+
+        Pays/région             select disabled | country
+        Nom                     text pattern( ^[\p{L}'-]+$ ) | familyName
+        Prenom                  text pattern( ^[\p{L}'-]+$ ) | firstName
+        Adresse ligne 1         text | adressLine1
+        Adresse ligne 2         text | adressLine2
+        Ville                   text pattern( ^[\p{L}'-]+$ ) | town
+        Code postal             number min=5 max=5 | zipCode
+        Numéro de téléphone     tel pattern( ^0[\p{N}'-]{9}$ ) | phoneNumber
+
+
+        <div class="valid-feedback"> Looks good! </div>
+        class="form-control is-valid"
+    -->
+
+    <div class="container">
+        <section>
+            <div class="row">
+                <div class="col-8 bg-light p-3 fs-5 m-auto d-flex">
+                    Informations de livraison 
+                    <button class="btn btn-default ms-auto px-2"> <i class="bi bi-x"></i> </button>
+                </div>
+                <div class="col-8 m-auto p-3">
+                    <h2>Informations de livraison</h2>
+                    <form class="row needs-validation" novalidate >
+                        <div class="col-12 mb-3">
+                            <label for="country" class="mb-1" aria-label="Pays">Pays</label>
+                            <select class="form-control" id="country" name="country" placeholder="Indiquez un pays" pattern="^[\p{L} '-]+$" disabled>
+                                <option value="0">France</option>
+                            </select>
+                        </div>
+
+                        
+                        
+                        <div class="col-12 mb-3">
+                            <label for="firstName" class="mb-1" aria-label="Prénom">Prénom</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName"  pattern="^[\p{L} '-]+$" required>
+                            <div class="valid-feedback"> Looks good! </div>
+                            <div class="invalid-feedback">
+                                <strong>Le Prénom n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
+                                Seul les caracètres suivants sont autorisés : 
+                                <ul>
+                                    <li>Les caractères alphabétiques</li>
+                                    <li>l'apostrophe (')</li>
+                                    <li>le tiret (-)</li>
+                                </ul>
+                            </div>
+                        </div>
+        
+                        <div class="col-12 mb-3">
+                            <label for="familyName" class="mb-1"   aria-label="Nom">Nom</label>
+                            <input type="text" class="form-control" id="familyName" name="familyName" pattern="^[\p{L} '-]+$"  required>
+                            <div class="valid-feedback"> Looks good! </div>
+                            <div class="invalid-feedback">
+                                <strong>Le Nom n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
+                                Seul les caracètres suivants sont autorisés : 
+                                <ul>
+                                    <li>Les caractères alphabétiques</li>
+                                    <li>l'apostrophe (')</li>
+                                    <li>le tiret (-)</li>
+                                </ul>
+                            </div>
+                        </div>
+        
+                        <div class="col-12 mb-3">
+                            <label for="adressLine1" class="mb-1"   aria-label="Adresse ligne 1">Adresse ligne 1</label>
+                            <input type="text" class="form-control" id="adressLine1" name="adressLine1" placeholder="Adresse postale, boîte postale" required>
+                            <div class="valid-feedback"> Looks good! </div>
+                            <div class="invalid-feedback"> <strong>L'Adresse ligne 1 n'a pas été renseignée..</strong> </div>
+                        </div>
+        
+                        <div class="col-12 mb-3">
+                            <label for="adressLine2" class="mb-1"   aria-label="Adresse ligne 2">Adresse ligne 2</label>
+                            <input type="text" class="form-control" id="adressLine2" name="adressLine2" placeholder="Appartement, suite unité, immeuble, étage, etc.">
+                        </div>
+        
+                        <div class="col-12 mb-3">
+                            <label for="town" class="mb-1" aria-label="Ville">Ville</label>
+                            <input type="text" class="form-control" id="town" name="town"  required>
+                            <div class="valid-feedback"> Looks good! </div>
+                            <div class="invalid-feedback"> <strong>La Ville n'a pas été renseignée.</strong> </div>
+                        </div>
+        
+                        <div class="col-12 mb-3">
+                            <label for="zipCode" class="mb-1"   aria-label="Code Postale">Code Postale</label>
+                            <input id="zipCode" name="zipCode" type="text" class="form-control" pattern="^[\p{N}]{5}$" minlength="5" maxlength="5"  required>
+                            <div class="valid-feedback"> Looks good! </div>
+                            <div class="invalid-feedback">
+                                <strong>Le code Postale n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
+                                Seul les caracètres numériques sont autorisés.
+                            </div>
+                        </div>
+        
+                        <div class="col-12 mb-3">
+                            <label for="phoneNumber" class="mb-1"   aria-label="Numéro de téléphone">Numéro de téléphone</label>
+                            <input id="phoneNumber" name="phoneNumber" type="tel" class="form-control" pattern="^0[\p{N}]{9}$" maxlength="10"   required>
+                            <div class="valid-feedback"> Looks good! </div>
+                            <div class="invalid-feedback">
+                                <strong>Le numéro de téléphone n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
+                                Seul les caracètres numériques sont autorisés.
+                            </div>
+                        </div>
+        
+        
+                        <div class="col-12 mb-3">
+                            <label for="email" class="mb-1" aria-label="Adresse email">Adresse email</label>
+                            <div class="input-group has-validation ">
+                                <span class="input-group-text" id="inputGroupPrepend3">@</span>
+                                <input type="email" class="form-control" id="email" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback emailHelp" placeholder="df" required>
+                                <div id="validationServerUsernameFeedback" class="invalid-feedback"> Whooops! </div>
+                                <div id="validationServerUsernameFeedback" class="valid-feedback"> Looks good! </div>
+                            </div>
+                            <div id="emailHelp" class="form-text">Exemple : Phil@contat.fr</div>
+                        </div>
+                        <section>
+                            <div class="col-12">
+                                <h3 class="h5">Ajouter des instructions pour la livraison</h3>
+                                <div class="col-12 mb-3">
+                                    <label for="moreInfo" class="mb-1"   aria-label="Avons-nous besoin de directions supplémentaires pour trouver cette adresse?">
+                                        Avons-nous besoin de directions supplémentaires pour trouver cette adresse?
+                                    </label>
+                                    <textarea name="moreInfo" class="form-control" id="moreInfo" rows="5" placeholder="Fournir des détails tels que la description du bâtiment, un point de repère à proximité ou d'autres instructions de navigation"></textarea>
+                                </div>
+                            </div>   
+                            
+                            <div class="col-12 mb-3">
+                                <label for="secureBuildingCode" class="mb-1"   aria-label="Faut-il un code de sécurité ou un numéro de téléphone pour accéder au bâtiment ?">
+                                    Faut-il un code de sécurité ou un numéro de téléphone pour accéder au bâtiment ?
+                                </label>
+                                <input type="text" class="form-control" id="secureBuildingCode" name="secureBuildingCode" >
+                            </div>
+
+                        </section>
+
+                        
+
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">Valider</button>
+                        </div>
+                    </form>  
+                </div>
+            </div>       
+        </section>
+        
+    
+    </div>
+
+<script>
+    (function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+
+</body>
+</html>
