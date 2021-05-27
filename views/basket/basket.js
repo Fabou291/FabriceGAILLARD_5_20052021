@@ -1,5 +1,8 @@
 const pathServer = 'http://localhost:3000/api/cameras/';
 
+const itemBasketManager = new ItemBasketManager();
+let listCheckbox;
+
 async function fetchWithIdList(idList){
     let responseList = [], response;
     for (const i in idList) {
@@ -12,12 +15,12 @@ async function fetchWithIdList(idList){
 }
 
 function updateTotal(){
-    let itemBasket = new ItemBasketManager().itemList;
+    let itemBasket = itemBasketManager.itemList;
     let HTML = "Aucun article sélectionné";
 
-    let listCheckBox = document.querySelectorAll('input[type="checkbox"]').entries(), 
-        listIndex = [],  j =0;
-    for (const [i, checkbox] of listCheckBox) if(checkbox.checked) listIndex[j++] = i;    
+    let listIndex = [],  j =0;
+
+    for (const [i, checkbox] of listCheckbox.entries()) if(checkbox.checked) listIndex[j++] = i;    
 
     if(listIndex.length > 0){
         let total = listIndex
@@ -32,17 +35,8 @@ function updateTotal(){
 
 }
 
-function updateSelectAllButton(invert){
-    let allChecked = true;
-    let nodeListCheckbox = document.querySelectorAll('input[type="checkbox"]').entries();
-
-    for (const [i, checkbox] of nodeListCheckbox){ allChecked &= checkbox.checked; }
-
-    if(invert) allChecked = !allChecked;
-
-    document.getElementById("deselectAll").innerHTML = (allChecked) ? 'Selectionner tout' : 'Déselectionner tout';
-    return allChecked;
-
+function updateSelectAllButton(allChecked){
+    document.getElementById("deselectAll").innerHTML = (allChecked) ? 'Déselectionner tout' : 'Selectionner tout'; 
 }
 
 
@@ -71,7 +65,7 @@ else{
             document.getElementById('content').innerHTML +=
             `<div class="row border-bottom py-4 itemShop">
                 <div class='d-flex col-12 col-md-auto align-items-center'>
-                    <input type="checkbox" class="form-check-input" name="selection" checked>
+                    <input type="checkbox" class="form-check-input" name="selection" ${(itemBasket.selected) ? 'checked' : '' } >
                 </div>
                 <div class='col-12 col-md-2'>
                     <img class="w-100" src="${item.imageUrl}" alt="${item.description}">
@@ -94,6 +88,8 @@ else{
             </div>`;
 
         }
+        listCheckbox = document.querySelectorAll('input[type="checkbox"]');
+        updateSelectAllButton(itemBasketManager.areAllSelected());
         updateTotal();
         return listItem;
     })
@@ -111,7 +107,7 @@ else{
 
             const input = item.querySelector("input.quantity");
             input.addEventListener('change',function(){
-                new ItemBasketManager().updateItemQuantity(
+                itemBasketManager.updateItemQuantity(
                     [...document.querySelectorAll("input.quantity")].indexOf(input),
                     input.value
                 );
@@ -122,13 +118,15 @@ else{
             deleteItemShop.addEventListener('click',function(e){
                 e.preventDefault();
 
-                new ItemBasketManager().removeItem(
+                itemBasketManager.removeItem(
                     [...document.querySelectorAll(".deleteItemShop")].indexOf(deleteItemShop)
                 );
-
+                
                 item.parentNode.removeChild(item);
+                listCheckbox = document.querySelectorAll('input[type="checkbox"]');
+
+                updateSelectAllButton(itemBasketManager.areAllSelected());
                 updateTotal();
-                updateSelectAllButton(invert = true);
             },false);
 
         }
@@ -137,27 +135,32 @@ else{
         /**
          * Gère l'evenement au lien/bouton **déselectionner tout**
          */
-        document.getElementById("deselectAll").addEventListener('click', function(){
-            let allChecked = updateSelectAllButton(invert = false);
-            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+
+         document.getElementById('deselectAll').addEventListener('click',function(){
+            
+            let allChecked = itemBasketManager.areAllSelected();
+            for (const [i, checkbox] of listCheckbox.entries()) {
+                itemBasketManager.updateSelected(i,!allChecked);
                 checkbox.checked = !allChecked;
-            })
-        
-            updateTotal();
+                updateSelectAllButton(!allChecked);
+                updateTotal();
+            }
         },false)
        
     })
     .then(()=>{
         /**
          * Gère l'evenement des checkbox
-         */
+         */   
 
-        document.querySelectorAll('input[type="checkbox"]').forEach(checkBox => {
-            checkBox.addEventListener('change',function(){
+        for (const [i, checkbox] of listCheckbox.entries()) {
+            checkbox.addEventListener('change',function(){
+                itemBasketManager.updateSelected(i,checkbox.checked);
+                updateSelectAllButton(itemBasketManager.areAllSelected());
                 updateTotal();
-                updateSelectAllButton(invert = true);
-            },false);
-        })
+            },false);            
+        }
+        
 
     })
     .catch(e => console.error(e))

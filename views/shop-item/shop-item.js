@@ -64,11 +64,11 @@ getIdParam()
                 id : id,
                 quantity : parseInt(document.querySelector('select[name="quantity"]').value),
                 version : parseInt(document.querySelector('select[name="version"]').value),
-                price : shopItem.price
+                price : shopItem.price,
+                selected : true
             }
         );
         
-        console.log(JSON.parse(localStorage.getItem('itemListBasket')))
 
     },false);
 })

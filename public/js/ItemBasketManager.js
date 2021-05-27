@@ -49,6 +49,12 @@ class ItemBasketManager {
         this.saveInLocalStorage();
     }
 
+    updateSelected(index, isSelected){
+        this.itemList[index].selected = isSelected;
+
+        this.saveInLocalStorage();
+    }
+
     /**
      * @param {object} item 
      */
@@ -69,6 +75,17 @@ class ItemBasketManager {
         let floatPrice = this.itemList.reduce((accumulator, item) => accumulator + item.quantity * (item.price/100).toFixed(2), 0 );
         return new Intl.NumberFormat( 'fr-FR', { style: 'currency', currency: 'EUR' }).format(floatPrice);
     }
+
+    isSelected(index){
+        return this.itemList[index].selected;
+    }
+
+    areAllSelected(){
+        let allSelected = true;
+        for (let i = 0; i< this.itemList.length; i++) allSelected &= this.isSelected(i);
+        return allSelected;
+    }
+
 
 }
 
