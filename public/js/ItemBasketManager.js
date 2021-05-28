@@ -92,6 +92,12 @@ class ItemBasketManager {
         return allNotSelected;
     }
 
+    getSelectedItems(){
+        let selectedItems = [];
+        for (let i = 0; i < this.itemList.length; i++) if(this.isSelected(i)) selectedItems[i] = this.itemList[i];
+        return selectedItems;
+    }
+
 
 }
 
