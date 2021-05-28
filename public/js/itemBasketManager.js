@@ -58,8 +58,9 @@ class ItemBasketManager {
     /**
      * @param {object} item 
      */
-    removeItem(index){
-        this.itemList.splice(index,1);
+    removeItem(...listIndex){
+        let listItemToRemove = listIndex.map(index => this.itemList[index] );
+        this.itemList = this.itemList.filter(item => !listItemToRemove.includes(item) )
         
         this.saveInLocalStorage();
     }
@@ -70,6 +71,7 @@ class ItemBasketManager {
     getIndexItem(item){
         return this.itemList.findIndex( element => (element.id == item.id && element.version == item.version ) )
     }
+
 
     getParsedTotal(){
         let floatPrice = this.itemList.reduce((accumulator, item) => accumulator + item.quantity * (item.price/100).toFixed(2), 0 );
@@ -94,7 +96,7 @@ class ItemBasketManager {
 
     getSelectedItems(){
         let selectedItems = [];
-        for (let i = 0; i < this.itemList.length; i++) if(this.isSelected(i)) selectedItems[i] = this.itemList[i];
+        for (let i = 0; i < this.itemList.length; i++) if(this.isSelected(i)) selectedItems.push(this.itemList[i]);
         return selectedItems;
     }
 

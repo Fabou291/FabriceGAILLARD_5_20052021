@@ -152,6 +152,7 @@ else{
          document.getElementById('deselectAll').addEventListener('click',function(){
             
             let allChecked = itemBasketManager.areAllSelected();
+            
             for (const [i, checkbox] of listCheckbox.entries()) {
                 itemBasketManager.updateSelected(i,!allChecked);
                 checkbox.checked = !allChecked;
@@ -194,6 +195,7 @@ else{
 
     })
     .then(()=>{
+
         document.querySelector("#displayFormDelivery").innerHTML =
         `<div class="row position-relative">
             <section class="col-11 px-0 col-lg-4 m-auto bg-white my-5 rounded-3 overflow-hidden form-delivery">
@@ -205,7 +207,7 @@ else{
                     </div>
                     <div class=" m-auto p-3">
                         <h2>Informations de livraison</h2>
-                        <form id="formDelivery" class="row" action="../confirm-command/confirm-command.html" method="POST"  novalidate>
+                        <form id="formDelivery" class="row" action="" method=""  novalidate>
 
                             <div class="mb-3">
                                 <label for="country" class="mb-1" aria-label="Pays">Pays</label>
@@ -354,6 +356,8 @@ else{
         displayFormDelivery.querySelector('button[type="submit"]').addEventListener('click',function(event){
             let formDelivery = displayFormDelivery.querySelector('form');
 
+            event.preventDefault();
+
             deliveryConctact.hydrate(
                 [...formDelivery.querySelectorAll('input, select, textarea')].reduce((accumulator, node) => ({
                     ...accumulator, 
@@ -364,24 +368,44 @@ else{
             sessionStorage.setItem('deliveryContact', JSON.stringify(deliveryConctact) )
 
 
-            if(!formDelivery.reportValidity()){
-                event.preventDefault();
+            if(!formDelivery.reportValidity()) 
                 formDelivery.classList.add('was-validated');
-            }else{
-                let formData = new FormData();
-                    formData.append('contact', JSON.stringify(
-                        {
+            else{
+
+                fetch("http://localhost:3000/api/cameras/order",{
+                    method : 'POST',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                    body : JSON.stringify({
+                        contact : {
                             firstName   : deliveryConctact.firstName,
                             lastName    : deliveryConctact.lastName,
                             city        : deliveryConctact.city,
-                            adress      : deliveryConctact.getAdressOneLine(),
+                            address     : deliveryConctact.getAdressOneLine(),
                             email       : deliveryConctact.email
-                        }
-                    ))
-                    formData.append(
-                        'product_id',
-                        JSON.stringify(itemBasketManager.getSelectedItems().map(listItemBasket => listItemBasket.id))
-                    );
+                        },
+                        products : itemBasketManager.getSelectedItems().map(listItemBasket => listItemBasket.id)
+                    })
+                })
+                .then(response => {
+                    if(!response.ok) throw "Erreur BIM BAM BOUM";
+                    return response.json();
+                })
+                .then(orderResponse => {
+                    orderResponse.total = itemBasketManager.getParsedTotal();
+                    sessionStorage.setItem('order',JSON.stringify(orderResponse));
+
+                    itemBasketManager.removeItem(
+                        ...itemBasketManager.getSelectedItems().map(element => itemBasketManager.getIndexItem(element))
+                    )
+                    
+
+                    document.location.href = "../../views/confirm-command/confirm-commad.html";
+
+                })
+                .catch(e => console.error(e))
+
             }
             
         },false)
@@ -389,4 +413,6 @@ else{
     .catch(e => console.error(e))
 
     
+
+
 }
