@@ -5,6 +5,7 @@ export default class Product {
     price = '';
     description = '';
     imageUrl = '';
+    lenses = '';
 
     constructor(product){
         Object.assign(this, product);

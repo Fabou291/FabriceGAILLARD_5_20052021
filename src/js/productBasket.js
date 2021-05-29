@@ -12,9 +12,10 @@ export default class ProductBasket extends Product{
             description   : ProductBasket.description,
             price         : ProductBasket.price,
             imageUrl      : ProductBasket.imageUrl,
+            lenses        : ProductBasket.lenses,
         });
-        this.quantity   = ProductBasket.quantity;
-        this.version    = ProductBasket.version;
+        this.quantity   = parseInt(ProductBasket.quantity);
+        this.version    = parseInt(ProductBasket.version);
         this.selected   = ProductBasket.selected;
     }
     
