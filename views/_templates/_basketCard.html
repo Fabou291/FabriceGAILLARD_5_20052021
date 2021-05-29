@@ -1,23 +1,23 @@
 <div class="row border-bottom py-4 itemShop">
     <div class='d-flex col-12 col-md-auto align-items-center'>
-        <input type="checkbox" class="form-check-input" name="selection" ${(itemBasket.selected) ? 'checked' : '' } >
+        <input type="checkbox" class="form-check-input" name="selection" ${(productBasket.selected) ? 'checked' : '' } >
     </div>
     <div class='col-12 col-md-2'>
-        <img class="w-100" src="${item.imageUrl}" alt="${item.description}">
+        <img class="w-100" src="${productbasket.imageUrl}" alt="${productbasket.description}">
     </div>
     <div class='col-12 col-md'>
-        <h5 class="card-title">${item.name}</h5>
-        <span>${ item.lenses[itemBasket.version] }</span>
-        <p class="card-text">${item.description}</p>
+        <h5 class="card-title">${productbasket.name}</h5>
+        <span>${ productbasket.lenses[productBasket.version] }</span>
+        <p class="card-text">${productbasket.description}</p>
         <div class="row">
             <div class="col-auto">
                 <label for="quantity">Quantité : </label>
-                <input class="w-auto quantity" name="quantity" type="number" value="${itemBasket.quantity}" min=1 >                                          
+                <input class="w-auto quantity" name="quantity" type="number" value="${productBasket.quantity}" min=1 >                                          
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-link deleteItemShop" data-id="${item._id}" >supprimer</button>
+                <button type="button" class="btn btn-link deleteItemShop" data-id="${productbasket._id}" >supprimer</button>
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-auto">${item.getParsedPrice()}</div>
+    <div class="col-12 col-md-auto">${productbasket.getParsedPrice()}</div>
 </div>

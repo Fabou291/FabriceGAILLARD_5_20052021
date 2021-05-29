@@ -1,3 +1,4 @@
+import config from '../../src/js/config.js';
 export default class Basket {
 
     listProduct = [];
@@ -7,12 +8,24 @@ export default class Basket {
     }
 
     add(product){
-        if(!this.exist(product) ) this.listProduct.push(product);
-        else this.update(this.getIndex(product), product)
+        if(!this.exist(product) ){
+            this.listProduct.push(product);
+            this.saveInStorage();
+        } 
+        else{
+            let index = this.getIndex(product); 
+            this.update(index, { quantity : this.listProduct[index].quantity + product.quantity })
+        }  
     }
 
-    update(index, product){
-        this.listProduct[index].quantity += product.quantity;
+    update(index, changes){
+        this.listProduct[index] = Object.assign(this.listProduct[index],changes );
+        this.saveInStorage();
+    }
+
+    remove(index){
+        this.listProduct.splice(index,1);
+        this.saveInStorage();
     }
 
     exist(product){
@@ -27,19 +40,35 @@ export default class Basket {
         return this.listProduct.findIndex(p => this.getIdentify(p) == this.getIdentify(product) );
     }
 
-
-    getTotal(){
-        return this.listProduct.reduce(accumulator, product => accumulator += product.getTotal(), 0);
+    saveInStorage(){
+        localStorage.setItem(config.storageName.basket, JSON.stringify(this.listProduct));
     }
 
-    getFormatedTotal(){
+    areAllSelected(){
+        let allSelected = true;
+        for (const product of this.listProduct) allSelected &= product.selected;
+        return allSelected;
+    }
+
+    areAllNotSelected(){
+        let allNotSelected = true;
+        for (const product of this.listProduct) allNotSelected &= !product.selected;
+        return allNotSelected;
+    }
+
+    getSelectedTotal(){
+        return this.listProduct.reduce((accumulator, product) => { 
+            let productTotal = (product.selected) ? product.getTotal() : 0 ;
+            return accumulator += productTotal; 
+        }, 0);
+    }
+
+    getFormatedSelectedTotal(){
         return new Intl.NumberFormat( 
             'fr-FR', { style: 'currency', currency: 'EUR' }
         ).format(
-            (this.getTotal() / 100).toFixed()
+            (this.getSelectedTotal() / 100).toFixed()
         );
     }
-
-
 
 }

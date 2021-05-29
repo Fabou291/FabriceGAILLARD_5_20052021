@@ -1,5 +1,319 @@
 import config from '../../src/js/config.js';
 import ProductBasket from '../../src/js/productBasket.js';
-import Basket from '../../src/js/Basket.js';
+import Basket from '../../src/js/basket.js';
+import DeliveryContact from '../../src/js/deliveryContact.js';
 
-fetch()
+
+let deliveryForm = document.querySelector('#displayFormDelivery');
+let listProductOnStorage = JSON.parse(localStorage.getItem(config.storageName.basket)) || [];
+let basket = new Basket(listProductOnStorage.map(productOnStorage => new ProductBasket(productOnStorage)));
+
+//Variables lié au DOM chargé ensuite
+let listCheckBox, listSelectQuantity, listItemShop, listDeleteButton;  
+
+
+function display(){
+    let listProductBasket = listProductOnStorage.map(productBasket => new ProductBasket(productBasket));
+    let content = document.querySelector("#content");
+    listProductBasket.forEach((productBasket,i) => {
+        content.innerHTML += 
+        `<div class="row border-bottom py-4 itemShop">
+            <div class='d-flex col-12 col-md-auto align-items-center'>
+                <input type="checkbox" class="form-check-input" name="selection" ${(productBasket.selected) ? 'checked' : '' } >
+            </div>
+            <div class='col-12 col-md-2'>
+                <img class="w-100" src="${productBasket.imageUrl}" alt="${productBasket.description}">
+            </div>
+            <div class='col-12 col-md'>
+                <h5 class="card-title">${productBasket.name}</h5>
+                <span>${ productBasket.lenses[productBasket.version] }</span>
+                <p class="card-text">${productBasket.description}</p>
+                <div class="row">
+                    <div class="col-auto">
+                        <label for="quantity${i}">Quantité : </label>
+                        <input class="w-auto quantity" name="quantity[]" id="quantity${i}" type="number" value="${productBasket.quantity}" min=1 >                                          
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-link deleteItemShop">supprimer</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-auto">${productBasket.getFormatedPrice()}</div>
+        </div>`;
+    })
+    defineVariablesDOM();
+    updateHTMLSelectAll();
+    updateHTMLPriceZone();
+}
+
+function defineVariablesDOM(){
+    listItemShop        = document.querySelectorAll('.itemShop');
+    listDeleteButton    = document.querySelectorAll('.deleteItemShop')
+    listSelectQuantity  = document.querySelectorAll('#formBasket input[name="quantity[]"]');
+    listCheckBox        = document.querySelectorAll('#formBasket input[type="checkbox"]');
+}
+
+function displayDeliveryForm(){
+    let deliveryConctact = new DeliveryContact([]);
+
+    deliveryForm.innerHTML = 
+    `<div class="row position-relative">
+        <section class="col-11 px-0 col-lg-4 m-auto bg-white my-5 rounded-3 overflow-hidden form-delivery">
+                <div class=" bg-light p-3 fs-5 d-flex">
+                    Informations de livraison 
+                    <button id="shutButtonForm" class="btn btn-default ms-auto px-2">
+                        <i class="bi bi-x-square-fill"></i>
+                    </button>
+                </div>
+                <div class=" m-auto p-3">
+                    <h2>Informations de livraison</h2>
+                    <form id="formDelivery" class="row" action="" method=""  novalidate>
+
+                        <div class="mb-3">
+                            <label for="country" class="mb-1" aria-label="Pays">Pays</label>
+                            <select class="form-control" id="country" name="country" disabled>
+                                <option value="0">France</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="firstName" class="mb-1" aria-label="Prénom">Prénom</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName"  pattern="^[\\p{L} '-]+$" required value="${deliveryConctact.firstName}">
+                            
+                            <div class="invalid-feedback">
+                                <strong>Le Prénom n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
+                                Seul les caracètres suivants sont autorisés : 
+                                <ul>
+                                    <li>Les caractères alphabétiques</li>
+                                    <li>l'apostrophe (')</li>
+                                    <li>le tiret (-)</li>
+                                </ul>
+                            </div>
+                        </div>
+        
+                        <div class="mb-3">
+                            <label for="lastName" class="mb-1"   aria-label="Nom">Nom</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" pattern="^[\\p{L} '-]+$"  required value="${deliveryConctact.lastName}">
+                            
+                            <div class="invalid-feedback">
+                                <strong>Le Nom n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
+                                Seul les caracètres suivants sont autorisés : 
+                                <ul>
+                                    <li>Les caractères alphabétiques</li>
+                                    <li>l'apostrophe (')</li>
+                                    <li>le tiret (-)</li>
+                                </ul>
+                            </div>
+                        </div>
+        
+                        <div class="mb-3">
+                            <label for="adressLine1" class="mb-1"   aria-label="Adresse ligne 1">Adresse ligne 1</label>
+                            <input type="text" class="form-control" id="adressLine1" name="adressLine1" placeholder="Adresse postale, boîte postale" required value="${deliveryConctact.adressLine1}">
+                            
+                            <div class="invalid-feedback"> <strong>L'Adresse ligne 1 n'a pas été renseignée..</strong> </div>
+                        </div>
+        
+                        <div class="mb-3">
+                            <label for="adressLine2" class="mb-1"   aria-label="Adresse ligne 2">Adresse ligne 2</label>
+                            <input type="text" class="form-control" id="adressLine2" name="adressLine2" placeholder="Appartement, suite unité, immeuble, étage, etc." value="${deliveryConctact.adressLine2}">
+                        </div>
+        
+                        <div class="mb-3">
+                            <label for="city" class="mb-1" aria-label="Ville">Ville</label>
+                            <input type="text" class="form-control" id="city" name="city"  required value="${deliveryConctact.city}">
+                            
+                            <div class="invalid-feedback"> <strong>La Ville n'a pas été renseignée.</strong> </div>
+                        </div>
+        
+                        <div class="mb-3">
+                            <label for="zipCode" class="mb-1"   aria-label="Code Postale">Code Postale</label>
+                            <input id="zipCode" name="zipCode" type="text" class="form-control" pattern="^[\\p{N}]{5}$" minlength="5" maxlength="5"  required value="${deliveryConctact.zipCode}">
+                            
+                            <div class="invalid-feedback">
+                                <strong>Le code Postale n'a pas été renseigné, ou a été mal renseigné.</strong>
+                                <ul>
+                                    <li>Seul les caracètres numériques sont autorisés</li>
+                                    <li>Il doit contenir 5 chiffres</li>
+                                </ul>
+                            </div>
+                        </div>
+        
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="mb-1"   aria-label="Numéro de téléphone">Numéro de téléphone</label>
+                            <input id="phoneNumber" name="phoneNumber" type="tel" class="form-control" pattern="^0[\\p{N}]{9}$" maxlength="10"   required value="${deliveryConctact.phoneNumber}">
+                            
+                            <div class="invalid-feedback">
+                                <strong>Le numéro de téléphone n'a pas été renseigné, ou a été mal renseigné.</strong>
+                                <ul>
+                                    <li>Seul les caracètres numériques sont autorisés</li>
+                                    <li>Il doit contenir 10 chiffres</li>
+                                </ul>
+                            </div>
+                        </div>
+        
+        
+                        <div class="mb-3">
+                            <label for="email" class="mb-1" aria-label="Adresse email">Adresse email</label>
+                            <div class="input-group has-validation ">
+                                <span class="input-group-text" id="inputGroupPrepend3">@</span>
+                                <input type="email" class="form-control" name="email" id="email" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback emailHelp" required value="${deliveryConctact.email}">
+                                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                    <strong>L'adresse email n'a pas été renseigné, ou a été mal renseigné.</strong>
+                                </div>
+                            </div>
+                            <div id="emailHelp" class="form-text">Exemple : Phil@contat.fr</div>
+                        </div>
+                        <section>
+                            <div class="">
+                                <h3 class="h5">Ajouter des instructions pour la livraison</h3>
+                                <div class="mb-3">
+                                    <label for="moreInfo" class="mb-1"   aria-label="Avons-nous besoin de directions supplémentaires pour trouver cette adresse?">
+                                        Avons-nous besoin de directions supplémentaires pour trouver cette adresse?
+                                    </label>
+                                    <textarea name="moreInfo" class="form-control" id="moreInfo" rows="5" placeholder="Fournir des détails tels que la description du bâtiment, un point de repère à proximité ou d'autres instructions de navigation">${deliveryConctact.moreInfo}</textarea>
+                                </div>
+                            </div>   
+                            
+                            <div class="mb-3">
+                                <label for="secureBuildingCode" class="mb-1"   aria-label="Faut-il un code de sécurité ou un numéro de téléphone pour accéder au bâtiment ?">
+                                    Faut-il un code de sécurité ou un numéro de téléphone pour accéder au bâtiment ?
+                                </label>
+                                <input type="text" class="form-control" id="secureBuildingCode" name="secureBuildingCode" value="${deliveryConctact.secureBuildingCode}" >
+                            </div>
+                        </section>
+
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">Valider</button>
+                        </div>
+
+                    </form>  
+                </div>     
+        </section>                 
+    </div>
+    <div class="w-100 h-100 position-absolute top-0 shut-zone"></div>`;
+}
+
+function addEventSubmitFormBasket(){
+    document.querySelectorAll('#formBasket button[type="submit"]').forEach(button => {
+        button.addEventListener('click',function(event){
+            event.preventDefault();
+            deliveryForm.classList.remove('d-none');
+        },false);
+    })
+}
+
+function addEventShutDown(){
+    document.querySelectorAll('#shutButtonForm, .shut-zone').forEach(node => {
+        node.addEventListener('click',function(event){
+            event.preventDefault();
+            deliveryForm.classList.add('d-none');
+        },false);
+    })
+}
+
+function addEventInputQuantity(){
+
+    listSelectQuantity = document.querySelectorAll('#formBasket input[name="quantity[]"]');
+
+        listSelectQuantity.forEach(node => {
+            node.addEventListener('change',function(event){
+                event.stopPropagation();
+
+                basket.update(
+                    [...listSelectQuantity].findIndex( node => node === this ), 
+                    { quantity : this.value } 
+                );
+                updateHTMLPriceZone();
+            })
+        },false)
+
+}
+
+function addEventCheckBox(){
+
+    listCheckBox = document.querySelectorAll('#formBasket input[type="checkbox"]');
+
+        listCheckBox.forEach(node => {
+            node.addEventListener('change',function(event){
+                event.stopPropagation();
+
+                basket.update(
+                    [...listCheckBox].findIndex( node => node === this ), 
+                    { selected : this.checked } 
+                );
+                updateHTMLSelectAll();
+                updateHTMLPriceZone();
+            })
+        },false)
+
+}
+
+function addEventSelectAll(){
+    document.querySelector('#deselectAll').addEventListener('click',function(event){
+
+        let allSelected = (basket.areAllSelected()) ? false : true ;
+        
+        document.querySelectorAll('#formBasket input[type="checkbox"]').forEach((node,index) => { 
+            basket.update(index, { selected : allSelected });
+            node.checked = allSelected; 
+        })
+
+        updateHTMLSelectAll();
+        updateHTMLPriceZone();
+
+    },false)
+}
+
+function addEventDelete(){
+
+    listItemShop        = document.querySelectorAll('.itemShop');
+    listDeleteButton  = document.querySelectorAll('.deleteItemShop')
+
+    listDeleteButton.forEach(node => {
+        node.addEventListener('click', function(event){
+            let index = [...listDeleteButton].findIndex(deleteButton => deleteButton === node);
+                basket.remove(index);
+                listItemShop[index].parentNode.removeChild(listItemShop[index]);
+                updateHTMLSelectAll();
+                updateHTMLPriceZone();
+        },false);
+        defineVariablesDOM();
+    })
+}
+
+function updateHTMLSelectAll(){
+    let deselectAll = document.querySelector('#deselectAll');
+    if(basket.areAllSelected()) deselectAll.innerHTML = 'Deselectionner tout';
+    else deselectAll.innerHTML = 'Selectionner tout';
+}
+
+function updateHTMLPriceZone(){
+
+    let innerHTML = 'Aucun item sélectionné';
+
+    if(!basket.areAllNotSelected()) innerHTML = basket.getFormatedSelectedTotal();
+
+    document.querySelectorAll('.total').forEach(node => node.innerHTML = innerHTML );
+
+    updateSubmitButtonFormBasket()
+}
+
+function updateSubmitButtonFormBasket(){
+    document.querySelectorAll('#formBasket button[type="submit"]').forEach(button => {
+
+            if(basket.areAllNotSelected()) button.setAttribute('disabled','');
+            else button.removeAttribute('disabled');
+
+    })
+}
+
+
+
+display();
+displayDeliveryForm();
+addEventSubmitFormBasket();
+addEventShutDown();
+addEventInputQuantity();
+addEventCheckBox();
+addEventSelectAll();
+addEventDelete();
