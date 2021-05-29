@@ -1,0 +1,25 @@
+<div class="row py-5">
+    <div class="col-4">
+        <img class="w-100" src="${shopItem.imageUrl}" alt="${shopItem.description}">
+    </div>
+    <div class="col-8">
+        <h1>${shopItem.name}</h1>
+        <p>${shopItem.description}</p>
+        <div>${shopItem.getParsedPrice()}</div>
+        <form id="formAddBasket" action="" >
+
+            <label for="quantity" aria-label="Quantité : ">Quantité : </label>
+            <select name="quantity" class="form-select mb-3 w-auto" id="quantity" aria-label="quantity">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+
+            <label for="version" aria-label="Version : ">Version : </label>
+            <select name="version" class="form-select mb-3 w-auto" name="version">${optionVersionHTML}</select>
+
+            <button type="submit" id="submit" data-id="${shopItem._id}" class="btn btn-warning">Ajouter au panier</button>
+        
+        </form>
+    </div>
+</div>

@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "sass": "sass --watch ./sass/main.scss:./public/css/styles.css"
+    "sass": "sass --watch ./sass/main.scss:./public/css/styles.css",
+    "build" : "webpack"
   },
   "author": "",
   "license": "ISC",
@@ -13,7 +14,8 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "bootstrap-icons": "^1.5.0",
-    "bootstrap-scss": "^5.0.1"
+    "bootstrap-scss": "^5.0.1",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0"
   }
 }
