@@ -10,6 +10,18 @@ export default class Product {
         Object.assign(this, product);
     }
 
-    
+    /**
+     * Retourne le prix au formaté "fr-FR"
+     * @returns string parsePrice 
+     */
+    getFormatedPrice(){
+        return new Intl.NumberFormat( 
+            'fr-FR', { style: 'currency', currency: 'EUR' }
+        ).format(
+            (this.price / 100).toFixed()
+        );
+    }
+
+
 
 }

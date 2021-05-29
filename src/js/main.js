@@ -1,4 +1,10 @@
 import config from './config.json'
-import product from './product.js';
-import productBasket from './productBasket.js';
-import basket from './basket.js';
+import Product from './product.js';
+import ProductBasket from './productBasket.js';
+import Basket from './basket.js';
+
+console.log(
+
+
+
+);
