@@ -56,11 +56,12 @@ export default class Basket {
         return allNotSelected;
     }
 
+    getSelectedProduct(){
+        return this.listProduct.filter(product => product.selected);
+    }
+
     getSelectedTotal(){
-        return this.listProduct.reduce((accumulator, product) => { 
-            let productTotal = (product.selected) ? product.getTotal() : 0 ;
-            return accumulator += productTotal; 
-        }, 0);
+        return this.getSelectedProduct().reduce( (accumulator, product) =>  accumulator += product.getTotal() , 0);
     }
 
     getFormatedSelectedTotal(){

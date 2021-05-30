@@ -6,10 +6,14 @@ import DeliveryContact from '../../src/js/deliveryContact.js';
 
 let deliveryForm = document.querySelector('#displayFormDelivery');
 let listProductOnStorage = JSON.parse(localStorage.getItem(config.storageName.basket)) || [];
+let deliveryContactOnStorage = JSON.parse(sessionStorage.getItem(config.storageName.deliveryContact)) || [];
+
 let basket = new Basket(listProductOnStorage.map(productOnStorage => new ProductBasket(productOnStorage)));
+let deliveryConctact = new DeliveryContact(deliveryContactOnStorage);
+
 
 //Variables lié au DOM chargé ensuite
-let listCheckBox, listSelectQuantity, listItemShop, listDeleteButton;  
+let listCheckBox, listSelectQuantity, listItemShop, listDeleteButton, formDelivery;
 
 
 function display(){
@@ -41,9 +45,6 @@ function display(){
             <div class="col-12 col-md-auto">${productBasket.getFormatedPrice()}</div>
         </div>`;
     })
-    defineVariablesDOM();
-    updateHTMLSelectAll();
-    updateHTMLPriceZone();
 }
 
 function defineVariablesDOM(){
@@ -51,11 +52,10 @@ function defineVariablesDOM(){
     listDeleteButton    = document.querySelectorAll('.deleteItemShop')
     listSelectQuantity  = document.querySelectorAll('#formBasket input[name="quantity[]"]');
     listCheckBox        = document.querySelectorAll('#formBasket input[type="checkbox"]');
+    formDelivery        = document.querySelector('#formDelivery');
 }
 
 function displayDeliveryForm(){
-    let deliveryConctact = new DeliveryContact([]);
-
     deliveryForm.innerHTML = 
     `<div class="row position-relative">
         <section class="col-11 px-0 col-lg-4 m-auto bg-white my-5 rounded-3 overflow-hidden form-delivery">
@@ -281,6 +281,36 @@ function addEventDelete(){
     })
 }
 
+function addEventSubmitFormDelivery(){
+
+    document.querySelector('#formDelivery button[type="submit"]').addEventListener('click',function(event){
+        event.preventDefault();
+
+        if(!formDelivery.reportValidity()){
+            formDelivery.classList.add('was-validated');
+        }else{
+
+            let deliveryConctact = new DeliveryContact(getFormDeliveryValue());
+
+            sessionStorage.setItem( config.storageName.deliveryContact , JSON.stringify(deliveryConctact) );
+
+            let objectPost = Object.assign(
+                { contact : deliveryConctact.getPostObject() }, 
+                { products : basket.getSelectedProduct().map(product => product._id ) }
+            );
+
+            postOrder(objectPost)
+            .then(response => {
+                sessionStorage.setItem( config.storageName.ordered , JSON.stringify(response) );
+                window.location.href = '../confirm-command/confirm-command.html'                
+            })
+            .catch(e => console.error(e))
+
+
+        }
+    },false);
+}
+
 function updateHTMLSelectAll(){
     let deselectAll = document.querySelector('#deselectAll');
     if(basket.areAllSelected()) deselectAll.innerHTML = 'Deselectionner tout';
@@ -307,13 +337,34 @@ function updateSubmitButtonFormBasket(){
     })
 }
 
+function getFormDeliveryValue(){
+    return [...formDelivery.querySelectorAll('input, textarea')].reduce((accumulator, node) => ({
+        ...accumulator,
+        [node.name] : node.value
+    }), {})
+}
 
+async function postOrder(body){
+    let response = await fetch(config.serverPath + 'order', {
+        method : 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+          },
+        body : JSON.stringify(body)
+    });
+    if(!response.ok) throw 'Erreur lors de la requete POST'
+    return await response.json();
+}
 
 display();
 displayDeliveryForm();
+defineVariablesDOM();
+updateHTMLSelectAll();
+updateHTMLPriceZone();
 addEventSubmitFormBasket();
 addEventShutDown();
 addEventInputQuantity();
 addEventCheckBox();
 addEventSelectAll();
 addEventDelete();
+addEventSubmitFormDelivery();

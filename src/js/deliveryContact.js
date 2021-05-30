@@ -25,9 +25,9 @@ export default class DeliveryContact{
         return {
             firstName   : this.firstName,
             lastName    : this.firstName,
-            adress      : this.getAdressOneLine(),
+            address      : this.getAdressOneLine(),
             city        : this.city,
-            email       : email,
+            email       : this.email
         }
     }
 
