@@ -23,22 +23,19 @@
                 <section class="row rounded-3 ">
                     <div class="mb-5">
                         <h1 class='fw-bold'>Confirmation de commande</h1>
-                        <p><a href="#">commande n° &{commandeNumber}</a></p>
-                        <span>&{price} €</span>                        
+                        <p><a href="#">commande n° <span id="order_number"></span></a></p>
+                        <span>Prix total de la commande : <strong id="order_price"></strong></span>                        
                     </div>
 
                     <div class="row mb-5">
                         <div class="col-8">
                             <h2 class="h2 fw-bold font text-success">Votre commande à bien été envoyée !</h2>
                             <p class="py-3 ">
-                                Nous vous somme reconaissant d'avoir Lorem ipsum dolor sit amet 
-                                consectetur adipisicing elit. Iure, nulla dignissimos? Autem dolore 
-                                beatae ullam commodi distinctio facilis velit vel. Eum blanditiis culpa 
-                                unde, architecto quas sequi veritatis ab quam?
+                                Merci de votre confiance, <span id="order_name"></span><br/>
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et odio magni maxime saepe, consequuntur adipisci dolorem magnam deserunt, culpa at harum voluptate, est veritatis repellendus sint sit aliquid accusamus itaque.
                             </p>
                             <div >
-                                <button type="button" class="btn btn-warning rounded-pill ">Voir les détails </button>
-                                <button type="button" class="btn btn-outline-dark rounded-pill ">Continuez vos achats</button>
+                                <a  href="../index/index.html" type="button" class="btn btn-outline-dark rounded-pill ">Continuez mes achats</a>
                             </div>                            
                         </div>
                         <div class="col-4">
@@ -52,7 +49,7 @@
                 <section class="rounded-3">
 
                         <h2 class="h2 fw-bold font">Date de livraison prévisionnel</h2>
-                        <p class="h3">10 Janvier 2021</p>                
+                        <p class="h3" id="delivery_date_prev"></p>                
      
                 </section>   
             </div>

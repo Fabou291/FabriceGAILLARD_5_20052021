@@ -116,9 +116,17 @@ function displayDeliveryForm(){
 
                             <div class="mb-3">
                                 <label for="city" class="mb-1" aria-label="Ville">Ville</label>
-                                <input type="text" class="form-control" id="city" name="city"  required value="${deliveryConctact.city}">
+                                <input type="text" class="form-control" id="city" name="city" pattern="^[\\p{L} '-]+$"  required value="${deliveryConctact.city}">
                                 
-                                <div class="invalid-feedback"> <strong>La Ville n'a pas été renseignée.</strong> </div>
+                                <div class="invalid-feedback">
+                                    <strong>La ille n'a pas été renseignée ou a été mal renseignée.</strong><br>
+                                    Seul les caracètres suivants sont autorisés : 
+                                    <ul>
+                                        <li>Les caractères alphabétiques</li>
+                                        <li>l'apostrophe (')</li>
+                                        <li>le tiret (-)</li>
+                                    </ul>
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -142,6 +150,7 @@ function displayDeliveryForm(){
                                     <strong>Le numéro de téléphone n'a pas été renseigné, ou a été mal renseigné.</strong>
                                     <ul>
                                         <li>Seul les caracètres numériques sont autorisés</li>
+                                        <li>Il doit commencer par un 0</li>
                                         <li>Il doit contenir 10 chiffres</li>
                                     </ul>
                                 </div>
@@ -266,8 +275,8 @@ function addEventDelete(){
                 listItemShop[index].parentNode.removeChild(listItemShop[index]);
                 updateHTMLSelectAll();
                 updateHTMLPriceZone();
+                defineVariablesDOM();
         },false);
-        defineVariablesDOM();
     })
 }
 
@@ -291,7 +300,7 @@ function addEventSubmitFormDelivery(){
 
             postOrder(objectPost)
             .then(response => {
-                response.totalPrice = basket.getSelectedTotal();
+                response.totalPrice = basket.getFormatedSelectedTotal();
 
                 basket.getSelectedProduct().forEach(product => { basket.remove( basket.getIndex(product) ) })
 
