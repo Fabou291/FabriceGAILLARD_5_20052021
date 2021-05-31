@@ -7,53 +7,15 @@
 
     <link rel="stylesheet" href="../../public/css/styles.css">
 
-
-    <script src="../../public/js/popper.min.js" defer></script>
-    <script src="../../public/js/bootstrap.min.js" defer></script>
+    <script src="../../src/js/vendors/bootstrap.min.js" defer></script>
+    <script type="module" src="confirm-command.js" defer></script>
     
     <title>Orinoco</title>
 </head>
 <body class="d-flex flex-column h-100">
     
-    <header>
-        <div class="container">
-            <nav class="navbar navbar-expand-lg">
-                <a class="navbar-brand" href="../../views/index/index.html">Orinoco</a>
-                <button class="navbar-toggler navbar-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="../../views/basket/basket.html">Panier</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                        </li>
-                    </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                </div>
-            </nav>   
-        </div>
-        
-    </header>
+    <header id="mainHeader"></header>
+
     <main class="container">
 
         <div class="row mt-5">
@@ -112,11 +74,8 @@
 
         
     </main>
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container">
-          <span class="text-muted">Place sticky footer content here.</span>
-        </div>
-    </footer>
+
+    <footer id="mainFooter" class="footer mt-auto py-3 bg-light"></footer>
 
 </body>
 </html>

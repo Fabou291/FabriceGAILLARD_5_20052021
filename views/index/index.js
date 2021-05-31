@@ -1,4 +1,5 @@
 import config from '../../src/js/config.js';
+import {addHeader, addFooter} from '../../src/js/functions.js';
 import Product from '../../src/js/product.js';
 
 
@@ -10,6 +11,7 @@ import Product from '../../src/js/product.js';
 }
 let card = await getTemplate('../_templates/_indexCard.html');*/
 
+addHeader(); addFooter();
 
 fetch(config.serverPath)
 .then(response => {

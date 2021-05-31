@@ -23,4 +23,8 @@ export default class ProductBasket extends Product{
         return this.price * this.quantity;
     }
 
+    getNameVersionChoosed(){
+        return this.lenses[this.version];
+    }
+
 }

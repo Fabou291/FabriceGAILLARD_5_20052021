@@ -1,10 +1,9 @@
 import config from '../../src/js/config.js';
+import {addHeader, addFooter} from '../../src/js/functions.js';
 import ProductBasket from '../../src/js/productBasket.js';
 import Basket from '../../src/js/basket.js';
 import DeliveryContact from '../../src/js/deliveryContact.js';
 
-
-let deliveryForm = document.querySelector('#displayFormDelivery');
 let listProductOnStorage = JSON.parse(localStorage.getItem(config.storageName.basket)) || [];
 let deliveryContactOnStorage = JSON.parse(sessionStorage.getItem(config.storageName.deliveryContact)) || [];
 
@@ -12,11 +11,9 @@ let basket = new Basket(listProductOnStorage.map(productOnStorage => new Product
 let deliveryConctact = new DeliveryContact(deliveryContactOnStorage);
 
 
-//Variables lié au DOM chargé ensuite
 let listCheckBox, listSelectQuantity, listItemShop, listDeleteButton, formDelivery;
 
-
-function display(){
+function displayListProduct(){
     let listProductBasket = listProductOnStorage.map(productBasket => new ProductBasket(productBasket));
     let content = document.querySelector("#content");
     listProductBasket.forEach((productBasket,i) => {
@@ -56,116 +53,115 @@ function defineVariablesDOM(){
 }
 
 function displayDeliveryForm(){
-    deliveryForm.innerHTML = 
-    `<div class="row position-relative">
-        <section class="col-11 px-0 col-lg-4 m-auto bg-white my-5 rounded-3 overflow-hidden form-delivery">
-                <div class=" bg-light p-3 fs-5 d-flex">
-                    Informations de livraison 
-                    <button id="shutButtonForm" class="btn btn-default ms-auto px-2">
-                        <i class="bi bi-x-square-fill"></i>
-                    </button>
-                </div>
-                <div class=" m-auto p-3">
-                    <h2>Informations de livraison</h2>
-                    <form id="formDelivery" class="row" action="" method=""  novalidate>
+    document.querySelector('#modalContainer').innerHTML = 
+    `
+        <div class="modal fade" id="modalDeliveryContact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="exampleModalLabel">Informations de livraison</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formDelivery" class="row" action="" method=""  novalidate>
 
-                        <div class="mb-3">
-                            <label for="country" class="mb-1" aria-label="Pays">Pays</label>
-                            <select class="form-control" id="country" name="country" disabled>
-                                <option value="0">France</option>
-                            </select>
-                        </div>
+                            <div class="mb-3">
+                                <label for="country" class="mb-1" aria-label="Pays">Pays</label>
+                                <select class="form-control" id="country" name="country" disabled>
+                                    <option value="0">France</option>
+                                </select>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="firstName" class="mb-1" aria-label="Prénom">Prénom</label>
-                            <input type="text" class="form-control" id="firstName" name="firstName"  pattern="^[\\p{L} '-]+$" required value="${deliveryConctact.firstName}">
-                            
-                            <div class="invalid-feedback">
-                                <strong>Le Prénom n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
-                                Seul les caracètres suivants sont autorisés : 
-                                <ul>
-                                    <li>Les caractères alphabétiques</li>
-                                    <li>l'apostrophe (')</li>
-                                    <li>le tiret (-)</li>
-                                </ul>
-                            </div>
-                        </div>
-        
-                        <div class="mb-3">
-                            <label for="lastName" class="mb-1"   aria-label="Nom">Nom</label>
-                            <input type="text" class="form-control" id="lastName" name="lastName" pattern="^[\\p{L} '-]+$"  required value="${deliveryConctact.lastName}">
-                            
-                            <div class="invalid-feedback">
-                                <strong>Le Nom n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
-                                Seul les caracètres suivants sont autorisés : 
-                                <ul>
-                                    <li>Les caractères alphabétiques</li>
-                                    <li>l'apostrophe (')</li>
-                                    <li>le tiret (-)</li>
-                                </ul>
-                            </div>
-                        </div>
-        
-                        <div class="mb-3">
-                            <label for="adressLine1" class="mb-1"   aria-label="Adresse ligne 1">Adresse ligne 1</label>
-                            <input type="text" class="form-control" id="adressLine1" name="adressLine1" placeholder="Adresse postale, boîte postale" required value="${deliveryConctact.adressLine1}">
-                            
-                            <div class="invalid-feedback"> <strong>L'Adresse ligne 1 n'a pas été renseignée..</strong> </div>
-                        </div>
-        
-                        <div class="mb-3">
-                            <label for="adressLine2" class="mb-1"   aria-label="Adresse ligne 2">Adresse ligne 2</label>
-                            <input type="text" class="form-control" id="adressLine2" name="adressLine2" placeholder="Appartement, suite unité, immeuble, étage, etc." value="${deliveryConctact.adressLine2}">
-                        </div>
-        
-                        <div class="mb-3">
-                            <label for="city" class="mb-1" aria-label="Ville">Ville</label>
-                            <input type="text" class="form-control" id="city" name="city"  required value="${deliveryConctact.city}">
-                            
-                            <div class="invalid-feedback"> <strong>La Ville n'a pas été renseignée.</strong> </div>
-                        </div>
-        
-                        <div class="mb-3">
-                            <label for="zipCode" class="mb-1"   aria-label="Code Postale">Code Postale</label>
-                            <input id="zipCode" name="zipCode" type="text" class="form-control" pattern="^[\\p{N}]{5}$" minlength="5" maxlength="5"  required value="${deliveryConctact.zipCode}">
-                            
-                            <div class="invalid-feedback">
-                                <strong>Le code Postale n'a pas été renseigné, ou a été mal renseigné.</strong>
-                                <ul>
-                                    <li>Seul les caracètres numériques sont autorisés</li>
-                                    <li>Il doit contenir 5 chiffres</li>
-                                </ul>
-                            </div>
-                        </div>
-        
-                        <div class="mb-3">
-                            <label for="phoneNumber" class="mb-1"   aria-label="Numéro de téléphone">Numéro de téléphone</label>
-                            <input id="phoneNumber" name="phoneNumber" type="tel" class="form-control" pattern="^0[\\p{N}]{9}$" maxlength="10"   required value="${deliveryConctact.phoneNumber}">
-                            
-                            <div class="invalid-feedback">
-                                <strong>Le numéro de téléphone n'a pas été renseigné, ou a été mal renseigné.</strong>
-                                <ul>
-                                    <li>Seul les caracètres numériques sont autorisés</li>
-                                    <li>Il doit contenir 10 chiffres</li>
-                                </ul>
-                            </div>
-                        </div>
-        
-        
-                        <div class="mb-3">
-                            <label for="email" class="mb-1" aria-label="Adresse email">Adresse email</label>
-                            <div class="input-group has-validation ">
-                                <span class="input-group-text" id="inputGroupPrepend3">@</span>
-                                <input type="email" class="form-control" name="email" id="email" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback emailHelp" required value="${deliveryConctact.email}">
-                                <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                                    <strong>L'adresse email n'a pas été renseigné, ou a été mal renseigné.</strong>
+                            <div class="mb-3">
+                                <label for="firstName" class="mb-1" aria-label="Prénom">Prénom</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName"  pattern="^[\\p{L} '-]+$" required value="${deliveryConctact.firstName}">
+                                
+                                <div class="invalid-feedback">
+                                    <strong>Le Prénom n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
+                                    Seul les caracètres suivants sont autorisés : 
+                                    <ul>
+                                        <li>Les caractères alphabétiques</li>
+                                        <li>l'apostrophe (')</li>
+                                        <li>le tiret (-)</li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div id="emailHelp" class="form-text">Exemple : Phil@contat.fr</div>
-                        </div>
-                        <section>
+
+                            <div class="mb-3">
+                                <label for="lastName" class="mb-1"   aria-label="Nom">Nom</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" pattern="^[\\p{L} '-]+$"  required value="${deliveryConctact.lastName}">
+                                
+                                <div class="invalid-feedback">
+                                    <strong>Le Nom n'a pas été renseigné, ou a été mal renseigné.</strong><br/>
+                                    Seul les caracètres suivants sont autorisés : 
+                                    <ul>
+                                        <li>Les caractères alphabétiques</li>
+                                        <li>l'apostrophe (')</li>
+                                        <li>le tiret (-)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="adressLine1" class="mb-1"   aria-label="Adresse ligne 1">Adresse ligne 1</label>
+                                <input type="text" class="form-control" id="adressLine1" name="adressLine1" placeholder="Adresse postale, boîte postale" required value="${deliveryConctact.adressLine1}">
+                                
+                                <div class="invalid-feedback"> <strong>L'Adresse ligne 1 n'a pas été renseignée..</strong> </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="adressLine2" class="mb-1"   aria-label="Adresse ligne 2">Adresse ligne 2</label>
+                                <input type="text" class="form-control" id="adressLine2" name="adressLine2" placeholder="Appartement, suite unité, immeuble, étage, etc." value="${deliveryConctact.adressLine2}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="city" class="mb-1" aria-label="Ville">Ville</label>
+                                <input type="text" class="form-control" id="city" name="city"  required value="${deliveryConctact.city}">
+                                
+                                <div class="invalid-feedback"> <strong>La Ville n'a pas été renseignée.</strong> </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="zipCode" class="mb-1"   aria-label="Code Postale">Code Postale</label>
+                                <input id="zipCode" name="zipCode" type="text" class="form-control" pattern="^[\\p{N}]{5}$" minlength="5" maxlength="5"  required value="${deliveryConctact.zipCode}">
+                                
+                                <div class="invalid-feedback">
+                                    <strong>Le code Postale n'a pas été renseigné, ou a été mal renseigné.</strong>
+                                    <ul>
+                                        <li>Seul les caracètres numériques sont autorisés</li>
+                                        <li>Il doit contenir 5 chiffres</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="mb-1"   aria-label="Numéro de téléphone">Numéro de téléphone</label>
+                                <input id="phoneNumber" name="phoneNumber" type="tel" class="form-control" pattern="^0[\\p{N}]{9}$" maxlength="10"   required value="${deliveryConctact.phoneNumber}">
+                                
+                                <div class="invalid-feedback">
+                                    <strong>Le numéro de téléphone n'a pas été renseigné, ou a été mal renseigné.</strong>
+                                    <ul>
+                                        <li>Seul les caracètres numériques sont autorisés</li>
+                                        <li>Il doit contenir 10 chiffres</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label for="email" class="mb-1" aria-label="Adresse email">Adresse email</label>
+                                <div class="input-group has-validation ">
+                                    <span class="input-group-text" id="inputGroupPrepend3">@</span>
+                                    <input type="email" class="form-control" name="email" id="email" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback emailHelp" required value="${deliveryConctact.email}">
+                                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                        <strong>L'adresse email n'a pas été renseigné, ou a été mal renseigné.</strong>
+                                    </div>
+                                </div>
+                                <div id="emailHelp" class="form-text">Exemple : Phil@contat.fr</div>
+                            </div>
+
                             <div class="">
-                                <h3 class="h5">Ajouter des instructions pour la livraison</h3>
+                                <h3 class="h3">Ajouter des instructions pour la livraison</h3>
                                 <div class="mb-3">
                                     <label for="moreInfo" class="mb-1"   aria-label="Avons-nous besoin de directions supplémentaires pour trouver cette adresse?">
                                         Avons-nous besoin de directions supplémentaires pour trouver cette adresse?
@@ -180,33 +176,27 @@ function displayDeliveryForm(){
                                 </label>
                                 <input type="text" class="form-control" id="secureBuildingCode" name="secureBuildingCode" value="${deliveryConctact.secureBuildingCode}" >
                             </div>
-                        </section>
 
-                        <div class="col-12">
-                            <button class="btn btn-primary" type="submit">Valider</button>
-                        </div>
-
-                    </form>  
-                </div>     
-        </section>                 
-    </div>
-    <div class="w-100 h-100 position-absolute top-0 shut-zone"></div>`;
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="submit">Valider</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 function addEventSubmitFormBasket(){
-    document.querySelectorAll('#formBasket button[type="submit"]').forEach(button => {
+    formBasket.querySelectorAll('#formBasket button[type="submit"]').forEach(button => {
         button.addEventListener('click',function(event){
             event.preventDefault();
-            deliveryForm.classList.remove('d-none');
-        },false);
-    })
-}
 
-function addEventShutDown(){
-    document.querySelectorAll('#shutButtonForm, .shut-zone').forEach(node => {
-        node.addEventListener('click',function(event){
-            event.preventDefault();
-            deliveryForm.classList.add('d-none');
+            let modal = new bootstrap.Modal(document.getElementById('modalDeliveryContact'));
+                modal.show()
         },false);
     })
 }
@@ -301,7 +291,12 @@ function addEventSubmitFormDelivery(){
 
             postOrder(objectPost)
             .then(response => {
+                response.totalPrice = basket.getSelectedTotal();
+
+                basket.getSelectedProduct().forEach(product => { basket.remove( basket.getIndex(product) ) })
+
                 sessionStorage.setItem( config.storageName.ordered , JSON.stringify(response) );
+
                 window.location.href = '../confirm-command/confirm-command.html'                
             })
             .catch(e => console.error(e))
@@ -356,13 +351,13 @@ async function postOrder(body){
     return await response.json();
 }
 
-display();
+addHeader(); addFooter();
+displayListProduct();
 displayDeliveryForm();
 defineVariablesDOM();
 updateHTMLSelectAll();
 updateHTMLPriceZone();
 addEventSubmitFormBasket();
-addEventShutDown();
 addEventInputQuantity();
 addEventCheckBox();
 addEventSelectAll();

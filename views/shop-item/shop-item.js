@@ -1,4 +1,5 @@
 import config from '../../src/js/config.js';
+import {addHeader, addFooter} from '../../src/js/functions.js';
 import Product from '../../src/js/product.js';
 import ProductBasket from '../../src/js/productBasket.js';
 import Basket from '../../src/js/Basket.js';
@@ -41,6 +42,9 @@ function setEventAddBasket(product){
             basket.add(productBasket);
 
         localStorage.setItem(config.storageName.basket, JSON.stringify(basket.listProduct));
+       
+        updateModal(productBasket);
+        modal.show();
         
     },false)
 }
@@ -48,19 +52,28 @@ function setEventAddBasket(product){
 
 
 /**
- * @function getParam
+ * @function getUrlParam
  * @description Récolte le paramètre demandé
  * @param {string} param 
  * @returns {string} paramValue
  */
-function getParam(param){
+function getUrlParam(param){
     let urlParams = new URLSearchParams(window.location.search);
     if(!urlParams.has(param)) throw `Aucun "${param}" trouvé`;
     return urlParams.get(param)    
 }
 
+function updateModal(productBasket){
+    document.getElementById('imageProductAdded').innerHTML      = `<img src="${productBasket.imageUrl}" class="card-img-top" >`;
+    document.getElementById('titleProductAdded').innerHTML      = `${productBasket.name}`;
+    document.getElementById('quantityProductAdded').innerHTML   = `${productBasket.quantity}`;
+    document.getElementById('versionProductAdded').innerHTML    = `${productBasket.getNameVersionChoosed()}`;
+}
 
-fetchProductById(getParam('_id'))
+let modal = new bootstrap.Modal(document.getElementById('modalAddBasket'));
+addHeader(); addFooter();
+
+fetchProductById(getUrlParam('_id'))
 .then(jsonProduct => {
     let product = new Product(jsonProduct);
     let htmlOptions = product.lenses.reduce( (accumulator, lens)  => accumulator += `<option value="${product.lenses.indexOf(lens)}">${lens}</option>`, '');
@@ -86,7 +99,7 @@ fetchProductById(getParam('_id'))
                     <label for="version" aria-label="Version : ">Version : </label>
                     <select name="version" id="version" class="form-select mb-3 w-auto">${htmlOptions}</select>
 
-                    <button type="submit" id="addToBasket" class="btn btn-warning">Ajouter au panier</button>
+                    <button type="submit" id="addToBasket" class="btn btn-warning" >Ajouter au panier</button>
                 
                 </form>
             </div>
