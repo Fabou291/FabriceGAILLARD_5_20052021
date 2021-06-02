@@ -1,0 +1,31 @@
+.product {
+    display : flex;
+    flex-wrap: wrap;
+    margin : 3rem 0;
+
+    background-color : $white;
+    padding : 3rem;
+
+
+    @include mediaScreen(md){
+        width : auto; 
+        flex-wrap: nowrap;             
+    }
+
+    &__thumbnail{
+        padding : 0 0 3rem 0; 
+        width : 100%;
+        @include mediaScreen(md){
+            width : auto;
+            padding : 0 3em 0 0;
+        }
+        img {
+            width : 100%;
+            object-fit: cover;
+            @include mediaScreen(md){
+                @include setSize(200px);                
+            }
+        }
+    }
+
+}

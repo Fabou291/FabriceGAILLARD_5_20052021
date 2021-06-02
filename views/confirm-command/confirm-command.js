@@ -11,16 +11,12 @@ let deliveryContact = new DeliveryContact(deliveryContactSessionStorage);
 
 
 function updateOnPage(){
-    //prix
     document.getElementById('order_price').innerHTML = orderSessionStorage.totalPrice;
 
-    //numéro de commande
     document.getElementById('order_number').innerHTML = orderSessionStorage.orderId;
     
-    //nom prénom
     document.getElementById('order_name').innerHTML = deliveryContact.firstName;
 
-    //date previsionnel
     document.getElementById('delivery_date_prev').innerHTML = getDateAWeekLater();
 }
 

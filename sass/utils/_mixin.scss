@@ -1,0 +1,10 @@
+@mixin setSize($w,$h : $w){
+    width : $w;
+    height : $h;
+}
+
+@mixin mediaScreen($breakpoint) {
+    @media screen and (min-width : map-get($grid-breakpoints, $breakpoint)) {
+        @content;
+    }
+}

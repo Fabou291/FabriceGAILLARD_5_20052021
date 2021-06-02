@@ -8,42 +8,85 @@
     <link rel="stylesheet" href="../../public/css/styles.css">
     <link rel="stylesheet" href="../../public/css/bootstrap-icons/bootstrap-icons.css">
     
-
-    
     <script src="../../src/js/vendors/bootstrap.min.js" defer></script>
-
     <script type="module" src="index.js" defer></script>
 
-    
     <title>Orinoco</title>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100 bg-grey">
     
-    <header id="mainHeader"></header>
 
-    <main class="container">
-        <div class="p-5 mb-4 bg-dark text-white rounded-3">
-            <div class="container-fluid py-5">
-              <h1 class="display-5 fw-bold">Custom jumbotron</h1>
-              <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it to your liking.</p>
-              <button class="btn btn-primary btn-lg" type="button">Example button</button>
+    <header id="mainHeader" class="bg-dark"></header>
+
+    <main>
+        
+        <div class="hero">
+            <div class="container hero__container">
+                <section class="hero__caption">
+                    <h1 class="display-5 fw-bold">Black Friday</h1>
+                    <p class="fs-4">Profitez jusqu'à 50% de réduction sur l'ensemble de notre sélection !</p>
+                    <button class="btn-hero btn-hero--cyan" type="button">Découvrez la sélection</button>
+                </section>
             </div>
         </div>
 
-        <section class="p-5">
 
-            <div class="row pb-3">
-                <div class="col">
-                    <h2 class="fw-bold">Notre gamme de produit</h2>
-                </div>
+        <div class="container mt-5">
+            <div class="row mb-5">
+                <section class="col-12 col-lg-7 ">
+                    <div class="p-5 bg-white w-100 h-100">
+                        <h2>Notre coups de coeur</h2>
+                        <p>Rapide présentation du produit</p>
+                        <span>Rapide présentation du produit</span>
+                        <a href="#">En savoir plus</a>                        
+                    </div>
+                </section>
+                <section class="col-12 col-lg-5 ps-lg-5 pt-5 pt-lg-0 ">
+                    <div class="p-5 bg-white w-100 h-100">
+                        <h2>Les 10 choses à connaitre pour l'achat d'un appareil photo</h2>
+                        <a href="#">En savoir plus</a>                        
+                    </div>
+
+                </section>
             </div>
+           
+        </div>
 
-            <div class="row" id="products"></div> 
 
-        </section>
+        <div class="container  mb-5">
+            <section class="bg-white p-5 ">
+                <div class="row pb-3">
+                    <div class="col border-bottom pb-3">
+                        <h2 class="fw-bold">Notre gamme d'appareil photo</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elim</p>
+                        <span>Trier par</span>
+                        <select name="" id="">
+                            <option value="">Prix (croissant)</option>
+                            <option value="">Prix (décroissant)</option>
+                            <option value="">Date (croissant)</option>
+                            <option value="">Date (décroissant)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row p-0 p-md-5 py-3 d-flex flex-wrap" id="products" >
+
+                    <!--MAQUETTE
+                        <div class="card-default"> 
+                        <img class="card-default__thumbnail" src="http://localhost:3000/images/vcam_1.jpg" alt="">
+                        <div class="card-default__caption">
+                            <h3 class="card-default__title">Titre</h3>
+                            <div class="card-default__price">prix</div>
+                        </div>
+                    </div>-->
+
+                </div> 
+            </section>            
+        </div>
+
     </main>
 
-    <footer id="mainFooter" class="footer mt-auto py-3 bg-light" ></footer>
+    <footer id="mainFooter"  class="mt-auto py-3 bg-dark text-white" ></footer>
 
 </body>
 </html>

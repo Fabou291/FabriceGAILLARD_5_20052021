@@ -1,0 +1,27 @@
+
+.hero{
+
+    background-color : $cyan;
+    background : no-repeat center url('../image/blackF.jpg'), #19d2fe;
+
+    height : 249px;
+    max-height : 249px;
+
+    &__container {
+        display : flex;
+        justify-content: center;
+        align-items: center;
+        height : 100%
+    }
+
+    &__caption {
+        color : white;
+        max-width : 480px
+    }
+
+    &__title, &__paragraphe {
+        padding : 0 0 20px 0;
+    }
+
+
+}

@@ -22,7 +22,19 @@ fetch(config.serverPath)
     listProduct.forEach(JSONproduct => {
         let product = new Product(JSONproduct);
         document.getElementById('products').innerHTML +=  
-        `<div class="col-12 ">
+        `
+        <div class="card-default">
+            <a href="${'../shop-item/shop-item.html' + '?_id='  + product._id}" >
+                <img class="card-default__thumbnail" src="${product.imageUrl}"  alt="${product.description}" >
+            </a>
+            <div class="card-default__caption">
+                <h3 class="card-default__title"><a href="${'../shop-item/shop-item.html' + '?_id='  + product._id}">${product.name}</a></h3>
+                <div class="card-default__price">${product.getFormatedPrice()}</div>
+            </div>
+        </div>
+        `
+
+        /*`<div class="col-12 ">
             <div class="card-item">
                 <div class="row py-5 border-bottom">
                     <div class="col-3">
@@ -36,7 +48,7 @@ fetch(config.serverPath)
                     </div>
                 </div>
             </div>                   
-        </div>`;
+        </div>`;*/
     });
 })
 .catch(e => console.error(e)) 

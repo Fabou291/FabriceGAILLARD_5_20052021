@@ -49,8 +49,6 @@ function setEventAddBasket(product){
     },false)
 }
 
-
-
 /**
  * @function getUrlParam
  * @description Récolte le paramètre demandé

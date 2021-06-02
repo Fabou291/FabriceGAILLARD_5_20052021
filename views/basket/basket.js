@@ -1,8 +1,8 @@
-import config from '../../src/js/config.js';
-import {addHeader, addFooter} from '../../src/js/functions.js';
-import ProductBasket from '../../src/js/productBasket.js';
-import Basket from '../../src/js/basket.js';
-import DeliveryContact from '../../src/js/deliveryContact.js';
+import config                   from '../../src/js/config.js';
+import {addHeader, addFooter}   from '../../src/js/functions.js';
+import ProductBasket            from '../../src/js/productBasket.js';
+import Basket                   from '../../src/js/basket.js';
+import DeliveryContact          from '../../src/js/deliveryContact.js';
 
 let listProductOnStorage = JSON.parse(localStorage.getItem(config.storageName.basket)) || [];
 let deliveryContactOnStorage = JSON.parse(sessionStorage.getItem(config.storageName.deliveryContact)) || [];
@@ -13,6 +13,11 @@ let deliveryConctact = new DeliveryContact(deliveryContactOnStorage);
 
 let listCheckBox, listSelectQuantity, listItemShop, listDeleteButton, formDelivery;
 
+
+/**
+ * @function displayListProduct
+ * @description Affiche l'ensemble des produits ajouté au Panier
+ */
 function displayListProduct(){
     let listProductBasket = listProductOnStorage.map(productBasket => new ProductBasket(productBasket));
     let content = document.querySelector("#content");
@@ -44,14 +49,10 @@ function displayListProduct(){
     })
 }
 
-function defineVariablesDOM(){
-    listItemShop        = document.querySelectorAll('.itemShop');
-    listDeleteButton    = document.querySelectorAll('.deleteItemShop')
-    listSelectQuantity  = document.querySelectorAll('#formBasket input[name="quantity[]"]');
-    listCheckBox        = document.querySelectorAll('#formBasket input[type="checkbox"]');
-    formDelivery        = document.querySelector('#formDelivery');
-}
-
+/**
+ * @function displayDeliveryForm
+ * @description Affiche le formulaire de contact pour la livraison (prérempli ou non)
+ */
 function displayDeliveryForm(){
     document.querySelector('#modalContainer').innerHTML = 
     `
@@ -199,6 +200,22 @@ function displayDeliveryForm(){
     `;
 }
 
+/**
+ * @function defineVariablesDOM
+ * @description Défini l'ensemble des variables en lien avec le DOM
+ */
+function defineVariablesDOM(){
+    listItemShop        = document.querySelectorAll('.itemShop');
+    listDeleteButton    = document.querySelectorAll('.deleteItemShop')
+    listSelectQuantity  = document.querySelectorAll('#formBasket input[name="quantity[]"]');
+    listCheckBox        = document.querySelectorAll('#formBasket input[type="checkbox"]');
+    formDelivery        = document.querySelector('#formDelivery');
+}
+
+/**
+ * @function defineVariablesDOM
+ * @description Défini l'ensemble des variables en lien avec le DOM
+ */
 function addEventSubmitFormBasket(){
     formBasket.querySelectorAll('#formBasket button[type="submit"]').forEach(button => {
         button.addEventListener('click',function(event){
@@ -210,6 +227,10 @@ function addEventSubmitFormBasket(){
     })
 }
 
+/**
+ * @function addEventInputQuantity
+ * @description Ajout de l'evenement "change" à tous les input Quantity
+ */
 function addEventInputQuantity(){
 
     listSelectQuantity = document.querySelectorAll('#formBasket input[name="quantity[]"]');
@@ -228,6 +249,10 @@ function addEventInputQuantity(){
 
 }
 
+/**
+ * @function addEventCheckBox
+ * @description Ajout de l'evenement "change" à tous les input checkbox
+ */
 function addEventCheckBox(){
 
     listCheckBox = document.querySelectorAll('#formBasket input[type="checkbox"]');
@@ -247,6 +272,10 @@ function addEventCheckBox(){
 
 }
 
+/**
+ * @function addEventSelectAll
+ * @description Ajout de l'evenement "click" au bouton #deseclectAll
+ */
 function addEventSelectAll(){
     document.querySelector('#deselectAll').addEventListener('click',function(event){
 
@@ -263,10 +292,13 @@ function addEventSelectAll(){
     },false)
 }
 
+/**
+ * @function addEventDelete
+ * @description Ajout de l'evenement "click" à chaque bouton ayant la class .deleteItemShop
+ */
 function addEventDelete(){
-
     listItemShop        = document.querySelectorAll('.itemShop');
-    listDeleteButton  = document.querySelectorAll('.deleteItemShop')
+    listDeleteButton    = document.querySelectorAll('.deleteItemShop')
 
     listDeleteButton.forEach(node => {
         node.addEventListener('click', function(event){
@@ -280,6 +312,10 @@ function addEventDelete(){
     })
 }
 
+/**
+ * @function addEventSubmitFormDelivery
+ * @description Ajout de l'evenement "click" aux boutons[type="submit"] du #formDelivery
+ */
 function addEventSubmitFormDelivery(){
 
     document.querySelector('#formDelivery button[type="submit"]').addEventListener('click',function(event){
@@ -289,7 +325,7 @@ function addEventSubmitFormDelivery(){
             formDelivery.classList.add('was-validated');
         }else{
 
-            let deliveryConctact = new DeliveryContact(getFormDeliveryValue());
+            let deliveryConctact = new DeliveryContact(getFormDeliveryValues());
 
             sessionStorage.setItem( config.storageName.deliveryContact , JSON.stringify(deliveryConctact) );
 
@@ -315,14 +351,21 @@ function addEventSubmitFormDelivery(){
     },false);
 }
 
+/**
+ * @function updateHTMLSelectAll
+ * @description Met à jour l'intitulé du bouton #deselectAll
+ */
 function updateHTMLSelectAll(){
     let deselectAll = document.querySelector('#deselectAll');
     if(basket.areAllSelected()) deselectAll.innerHTML = 'Deselectionner tout';
     else deselectAll.innerHTML = 'Selectionner tout';
 }
 
+/**
+ * @function updateHTMLPriceZone
+ * @description Met à jour les zones .total en indiquant le prix total
+ */
 function updateHTMLPriceZone(){
-
     let innerHTML = 'Aucun item sélectionné';
 
     if(!basket.areAllNotSelected()) innerHTML = basket.getFormatedSelectedTotal();
@@ -332,22 +375,36 @@ function updateHTMLPriceZone(){
     updateSubmitButtonFormBasket()
 }
 
+/**
+ * @function updateSubmitButtonFormBasket
+ * @description Enable ou Disable les boutons de validation du formation du panier en fonction des produits selectionnés ou non 
+ */
 function updateSubmitButtonFormBasket(){
     document.querySelectorAll('#formBasket button[type="submit"]').forEach(button => {
-
-            if(basket.areAllNotSelected()) button.setAttribute('disabled','');
-            else button.removeAttribute('disabled');
-
+        if(basket.areAllNotSelected()) button.setAttribute('disabled','');
+        else button.removeAttribute('disabled');
     })
 }
 
-function getFormDeliveryValue(){
+/**
+ * @function getFormDeliveryValues
+ * @description Récupère l'ensemble des valeurs renseignées au sein du formulaire de contact pour la livraison
+ * @return {object}
+ */
+function getFormDeliveryValues(){
     return [...formDelivery.querySelectorAll('input, textarea')].reduce((accumulator, node) => ({
         ...accumulator,
         [node.name] : node.value
     }), {})
 }
 
+/**
+ * @function postOrder
+ * @description Réalise une requete Post, envoie des informations de contact{} et 
+ * l'ensemble des produits selectionné products[] au sein de l'objet body
+ * @param {object} body représente le body attendu de la requete
+ * @return {Promise} 
+ */
 async function postOrder(body){
     let response = await fetch(config.serverPath + 'order', {
         method : 'POST',

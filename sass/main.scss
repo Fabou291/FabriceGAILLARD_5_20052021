@@ -1,6 +1,13 @@
 @import "./utils/variables";
 @import "../node_modules/bootstrap-scss/bootstrap.scss";
+@import "./utils/mixin";
 
-@import "./layouts/display-form-delivery.scss";
+@import "./base/base";
+@import "./base/font";
 
 @import "./components/card_item";
+@import "./components/hero";
+@import "./components/btn-hero";
+@import "./components/card_default";
+@import "./components/legal-mention";
+@import "./components/product";
