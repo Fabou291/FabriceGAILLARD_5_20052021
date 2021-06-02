@@ -10730,22 +10730,8 @@ body {
 
 @font-face {
   font-family: "SFPRODisplay-Regular";
-  src: url("../fonts/SFPRODisplay-Regular.ttf");
+  src: url("../fonts/SFProDisplay-Regular.ttf");
 }
-.card-item__thumb {
-  height: 100%;
-  min-height: 250px;
-  width: 100%;
-  object-fit: cover;
-}
-.card-item__title a {
-  text-decoration: none;
-  color: inherit;
-}
-.card-item__title a:hover {
-  color: #0d6efd;
-}
-
 .hero {
   background-color: #19d2fe;
   background: no-repeat center url("../image/blackF.jpg"), #19d2fe;
@@ -10805,11 +10791,11 @@ body {
 }
 @media screen and (min-width: 768px) {
   .card-default {
-    width: 45%;
+    width: 46%;
     margin-right: 0;
   }
   .card-default:not(:nth-child(2n)) {
-    margin-right: 10%;
+    margin-right: 8%;
   }
   .card-default:nth-child(2n) {
     margin-right: 0;
@@ -10911,16 +10897,22 @@ body {
   flex-wrap: wrap;
   margin: 3rem 0;
   background-color: #fff;
-  padding: 3rem;
+  padding: 1rem;
 }
 @media screen and (min-width: 768px) {
   .product {
     width: auto;
     flex-wrap: nowrap;
+    padding: 3rem;
+  }
+}
+@media screen and (min-width: 576px) {
+  .product {
+    padding: 3rem;
   }
 }
 .product__thumbnail {
-  padding: 0 0 3rem 0;
+  padding: 0 0 1rem 0;
   width: 100%;
 }
 @media screen and (min-width: 768px) {

@@ -77,31 +77,30 @@ fetchProductById(getUrlParam('_id'))
     let htmlOptions = product.lenses.reduce( (accumulator, lens)  => accumulator += `<option value="${product.lenses.indexOf(lens)}">${lens}</option>`, '');
 
     document.querySelector('#container').innerHTML = 
-        `<div class="row py-5">
-            <div class="col-4">
-                <img class="w-100" src="${product.imageUrl}" alt="${product.description}">
-            </div>
-            <div class="col-8">
-                <h1>${product.name}</h1>
-                <p>${product.description}</p>
-                <div>${product.getFormatedPrice()}</div>
-                <form id="formAddBasket" action="" >
-
+        `
+            <div class="product">
+                <div class="product__thumbnail">
+                    <img src="${product.imageUrl}" alt="${product.description}">
+                </div> 
+                <div class="product__caption">
+                    <h1>${product.name}</h1>
+                    <p>${product.description}</p>
+                    <div>${product.getFormatedPrice()}</div>
+                    <form id="formAddBasket" action="">
                     <label for="quantity" aria-label="Quantité : ">Quantité : </label>
                     <select name="quantity" class="form-select mb-3 w-auto" id="quantity" aria-label="quantity">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
-
                     <label for="version" aria-label="Version : ">Version : </label>
                     <select name="version" id="version" class="form-select mb-3 w-auto">${htmlOptions}</select>
-
-                    <button type="submit" id="addToBasket" class="btn btn-warning" >Ajouter au panier</button>
-                
-                </form>
+                    <button type="submit" id="addToBasket" class="btn btn-primary">Ajouter au panier</button>
+                    </form>
+                </div>
             </div>
-        </div>`;
+        `
+
     
 
     setEventAddBasket(product);

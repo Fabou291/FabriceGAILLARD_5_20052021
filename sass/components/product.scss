@@ -4,21 +4,29 @@
     margin : 3rem 0;
 
     background-color : $white;
-    padding : 3rem;
+    padding : 1rem;
+
 
 
     @include mediaScreen(md){
         width : auto; 
-        flex-wrap: nowrap;             
+        flex-wrap: nowrap;  
+        padding : 3rem;           
+    }
+
+    @include mediaScreen(sm){ 
+        padding : 3rem;           
     }
 
     &__thumbnail{
-        padding : 0 0 3rem 0; 
+        padding : 0 0 1rem 0; 
         width : 100%;
         @include mediaScreen(md){
             width : auto;
             padding : 0 3em 0 0;
         }
+
+        
         img {
             width : 100%;
             object-fit: cover;

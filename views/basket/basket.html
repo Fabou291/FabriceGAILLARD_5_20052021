@@ -22,31 +22,36 @@
     <header id="mainHeader" class="bg-dark"></header> 
 
     <main class="container">
-        <section class="py-5 px-3">
+        <section class="my-5">
             <form id="formBasket" action="#" method="POST">
                 <div class="row">
-                    <div class="col-9">
+                    <div class="col-12 col-lg-8 p-5 bg-white">
                         <div class="border-bottom pb-3 ">
-                            <h1>Votre panier</h1>
-                            <button type="button" class="btn btn-link" id="deselectAll" >Déselectionner tous</button>                
+                            <h1 class="fw-bold" >Votre panier</h1>
+                            <button type="button" class="btn btn-link ps-0" id="deselectAll" >Déselectionner tous</button>                
                         </div>
-                        <div id="content">
 
-                        </div> 
+                        <div id="content"></div> 
+
                         <div class="text-end mt-2">
-                            <div>
-                                <span class="total"></span>
+                            <div> 
+                                Prix total : <strong class="total"></strong>
                             </div>
-                            <button type="submit" class="btn btn-warning mt-2">Passer la commande</button>
+                            <button type="submit" class="btn btn-primary mt-2">Passer la commande</button>
                         </div>                        
                     </div>
 
-                    <div class="col-3">
-                        <div>
-                            <span class="total"></span>
+                    <div class="col-12 col-lg-4 p-0 pt-5 p-lg-0 ps-lg-5">
+                        <div class="p-5 bg-white h-100">
+                            <h2 class="fw-bold">Modalités</h2>
+                            <div> Prix total : <strong class="total"></strong> </div>
+                            <div> Date de livraison prévisionnel : <strong>7 juin 2021</strong> </div>
+                            <div class="mb-5"> Frais de port : <strong>offert</strong> </div>
+                            <button type="submit" class="btn btn-primary ">Passer la commande</button>                            
                         </div>
-                        <button type="submit" class="btn btn-warning ">Passer la commande</button>
-                    </div>                    
+                    </div>  
+                    
+                    
                 </div>
                 
             

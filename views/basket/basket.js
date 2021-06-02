@@ -31,16 +31,16 @@ function displayListProduct(){
                 <img class="w-100" src="${productBasket.imageUrl}" alt="${productBasket.description}">
             </div>
             <div class='col-12 col-md'>
-                <h5 class="card-title">${productBasket.name}</h5>
+                <div class="card-title fw-bold">${productBasket.name}</div>
                 <span>${ productBasket.lenses[productBasket.version] }</span>
                 <p class="card-text">${productBasket.description}</p>
                 <div class="row">
-                    <div class="col-auto">
-                        <label for="quantity${i}">Quantité : </label>
-                        <input class="w-auto quantity" name="quantity[]" id="quantity${i}" type="number" value="${productBasket.quantity}" min=1 >                                          
+                    <div>
+                        <label for="quantity${i}" class="col-12">Quantité : </label>
+                        <input class="quantity" name="quantity[]" id="quantity${i}" type="number" value="${productBasket.quantity}" min=1 >                                          
                     </div>
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-link deleteItemShop">supprimer</button>
+                    <div>
+                        <button type="button" class="btn btn-link ps-0 deleteItemShop">supprimer</button>
                     </div>
                 </div>
             </div>
