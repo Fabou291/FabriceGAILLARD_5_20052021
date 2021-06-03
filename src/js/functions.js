@@ -1,4 +1,8 @@
-let addHeader = function addHeader(){
+/**
+ * @function addHeader
+ * @description Ajoute le header au sein de la page HTML
+ */
+function addHeader(){
     document.querySelector('#mainHeader').innerHTML = 
     `
     <div class="container navbar-dark">
@@ -10,7 +14,7 @@ let addHeader = function addHeader(){
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">S'inscrire</a>
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Se connecter</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../../views/basket/basket.html">
@@ -25,13 +29,17 @@ let addHeader = function addHeader(){
     `;
 }
 
-let addFooter = function addFooter(){
+/**
+ * @function addFooter
+ * @description Ajoute le footer au sein de la page HTML
+ */
+function addFooter(){
     document.querySelector('#mainFooter').innerHTML = 
     `
     <div class="container px-5 pt-4">
         <nav>
             <div class="footer__brand h3 text-white pb-3">
-                <a href="#" class="text-reset">Orinoco</a>
+                <a href="#" class="text-reset text-decoration-none">Orinoco</a>
             </div>
             <div class="d-flex flex-wrap">
                 <div class="legal-mention">
@@ -58,4 +66,36 @@ let addFooter = function addFooter(){
     `;
 }
 
-export {addHeader, addFooter}
+/**
+ * @function getDateAWeekLater
+ * @description Récupère la date une semaine suivant la date actuel
+ * @returns {Date}
+ */
+function getDateAWeekLater(){
+    let date = new Date(Date.now() + (7*24*60*60*1000));
+    if(!isAWorkingDay(date)) date = getNextWorkingDay(date);
+    return date.toLocaleDateString('fr-FR', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+}
+
+/**
+ * @function getNextWorkingDay
+ * @description Récupère le prochain jour ouvré
+ * @param {Date} date 
+ * @returns {Date}
+ */
+function getNextWorkingDay(date){
+    if(!isAWorkingDay(date)) return getNextWorkingDay(new Date(date.getTime() + (1*24*60*60*1000)));
+    return date;
+}
+
+/**
+ * @function isAWorkingDay
+ * @description Vérifie si le jour fait partie des jour ouvré
+ * @param {Date} date 
+ * @returns bool
+ */
+function isAWorkingDay(date){
+    return ![6,0].includes(date.getDay());
+}
+
+export {addHeader, addFooter, getDateAWeekLater}

@@ -1,5 +1,4 @@
 $green-own : #1ed760;
-$grey-own : #919496;
 .legal-mention{
 
     padding : 0 0 30px 0;
@@ -18,8 +17,8 @@ $grey-own : #919496;
     }
 
     &__title {
-        color : $grey-own;
-        font-weight: 700;
+        color : $gray-600;
+        font-weight: bold;
         padding : 0 0 15px 0;
     }
 

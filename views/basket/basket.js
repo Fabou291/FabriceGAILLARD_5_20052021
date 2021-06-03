@@ -1,5 +1,5 @@
 import config                   from '../../src/js/config.js';
-import {addHeader, addFooter}   from '../../src/js/functions.js';
+import {addHeader, addFooter, getDateAWeekLater} from '../../src/js/functions.js';
 import ProductBasket            from '../../src/js/productBasket.js';
 import Basket                   from '../../src/js/basket.js';
 import DeliveryContact          from '../../src/js/deliveryContact.js';
@@ -47,6 +47,14 @@ function displayListProduct(){
             <div class="col-12 col-md-auto">${productBasket.getFormatedPrice()}</div>
         </div>`;
     })
+}
+
+/**
+ * @function addDatePrev
+ * @description Ajoute la date prévisionnelle
+ */
+function addDatePrev(){
+    document.getElementById('date_prev').innerHTML = getDateAWeekLater();
 }
 
 /**
@@ -366,7 +374,7 @@ function updateHTMLSelectAll(){
  * @description Met à jour les zones .total en indiquant le prix total
  */
 function updateHTMLPriceZone(){
-    let innerHTML = 'Aucun item sélectionné';
+    let innerHTML = 'Aucun produit sélectionné';
 
     if(!basket.areAllNotSelected()) innerHTML = basket.getFormatedSelectedTotal();
 
@@ -418,6 +426,7 @@ async function postOrder(body){
 }
 
 addHeader(); addFooter();
+addDatePrev();
 displayListProduct();
 displayDeliveryForm();
 defineVariablesDOM();

@@ -7,7 +7,7 @@ import Basket from '../../src/js/Basket.js';
 /**
  * @function fetchProductById
  * @description Récupére le produit par l'id "_id" 
- * @param {string} id
+ * @param {string}
  * @returns Promesse
  */
 async function fetchProductById(id){
@@ -20,7 +20,7 @@ async function fetchProductById(id){
  * @function setEventAddBasket
  * @description Ajoute l'evenement au bouton submit du formulaire 
  * Permettant de l'ajout d'un produit au panier
- * @param {Product} product 
+ * @param {Product}
  */
 function setEventAddBasket(product){
     document.querySelector('#addToBasket').addEventListener('click',function(event){
@@ -52,8 +52,8 @@ function setEventAddBasket(product){
 /**
  * @function getUrlParam
  * @description Récolte le paramètre demandé
- * @param {string} param 
- * @returns {string} paramValue
+ * @param {string}
+ * @returns {string}
  */
 function getUrlParam(param){
     let urlParams = new URLSearchParams(window.location.search);
@@ -61,6 +61,12 @@ function getUrlParam(param){
     return urlParams.get(param)    
 }
 
+/**
+ * @function updateModal
+ * @description Met à jour les données au sein de la modal 
+ * jouant le role de confirmation d'ajout au panier
+ * @param {ProductBasket} productBasket 
+ */
 function updateModal(productBasket){
     document.getElementById('imageProductAdded').innerHTML      = `<img src="${productBasket.imageUrl}" class="card-img-top" >`;
     document.getElementById('titleProductAdded').innerHTML      = `${productBasket.name}`;
@@ -100,9 +106,6 @@ fetchProductById(getUrlParam('_id'))
                 </div>
             </div>
         `
-
-    
-
     setEventAddBasket(product);
 
 })
