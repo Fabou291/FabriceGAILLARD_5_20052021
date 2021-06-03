@@ -19,6 +19,7 @@ function updateOnPage(){
     document.getElementById('order_name').innerHTML = deliveryContact.firstName;
 
     document.getElementById('delivery_date_prev').innerHTML = getDateAWeekLater();
+
 }
 
 addHeader(); addFooter();

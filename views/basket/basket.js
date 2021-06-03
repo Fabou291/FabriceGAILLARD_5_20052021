@@ -72,7 +72,7 @@ function displayDeliveryForm(){
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="formDelivery" class="row" action="" method=""  novalidate>
+                        <form id="formDelivery" class="row" action="#"  novalidate>
 
                             <div class="mb-3">
                                 <label for="country" class="mb-1" aria-label="Pays">Pays</label>

@@ -7,7 +7,9 @@ function addHeader(){
     `
     <div class="container navbar-dark">
         <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="../../views/index/index.html">Orinoco</a>
+            <a class="navbar-brand" href="../../views/index/index.html">
+                <img src="../../public/image/logo2.png" width="110">
+            </a>
             <button class="navbar-toggler navbar-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -39,7 +41,9 @@ function addFooter(){
     <div class="container px-5 pt-4">
         <nav>
             <div class="footer__brand h3 text-white pb-3">
-                <a href="#" class="text-reset text-decoration-none">Orinoco</a>
+                <a href="#" class="text-reset text-decoration-none">
+                    <img src="../../public/image/logo2.png" >
+                </a>
             </div>
             <div class="d-flex flex-wrap">
                 <div class="legal-mention">
@@ -98,4 +102,20 @@ function isAWorkingDay(date){
     return ![6,0].includes(date.getDay());
 }
 
-export {addHeader, addFooter, getDateAWeekLater}
+/**
+ * @function getTemplateErrorMessage
+ * @description Récupère le template du message d'erreur type
+ * @param {string} heading 
+ * @returns {string}
+ */
+function getTemplateErrorMessage(heading){
+    return `
+            <div class="my-5 p-5 bg-white">
+                <h1 class="fs-4 fw-bold mb-3">${heading}</h1>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nam magni voluptatem cum atque eaque voluptatibus hic porro labore eum iure possimus ab quae impedit voluptates ratione, suscipit sunt ipsum amet!</p>
+                <a class="btn btn-outline-dark rounded-pill" href="../index/index.html">Retour à la boutique</a>
+            </div>
+        `;
+}
+
+export {addHeader, addFooter, getDateAWeekLater, getTemplateErrorMessage}

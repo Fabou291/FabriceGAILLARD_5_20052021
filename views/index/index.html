@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="../../public/css/bootstrap-icons/bootstrap-icons.css">
     
     <script src="../../src/js/vendors/bootstrap.min.js" defer></script>
-    <script type="module" src="index.js" defer></script>
+    <script type="module" src="index.js"></script>
 
-    <title>Orinoco</title>
+    <title>Trouvez l'appareil photo qu'il vous faut - Orinoco</title>
 </head>
 <body class="d-flex flex-column h-100 bg-grey">
 
@@ -68,8 +68,8 @@
                     <div class="col border-bottom pb-3">
                         <h2 class="fw-bold">Notre gamme d'appareil photo</h2>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elim</p>
-                        <span>Trier par : </span>
-                        <select class="form-select w-auto d-inline"  name="" id="" disabled>
+                        <label for="sort">Trier par : </label>
+                        <select class="form-select w-auto d-inline"  name="sort" id="sort" disabled>
                             <option value="">Prix (croissant)</option>
                             <option value="">Prix (décroissant)</option>
                             <option value="">Date (croissant)</option>
@@ -78,18 +78,7 @@
                     </div>
                 </div>
 
-                <div class="row p-0 p-md-5 py-3 d-flex flex-wrap" id="products" >
-
-                    <!--MAQUETTE
-                        <div class="card-default"> 
-                        <img class="card-default__thumbnail" src="http://localhost:3000/images/vcam_1.jpg" alt="">
-                        <div class="card-default__caption">
-                            <h3 class="card-default__title">Titre</h3>
-                            <div class="card-default__price">prix</div>
-                        </div>
-                    </div>-->
-
-                </div> 
+                <div class="row p-0 p-md-5 py-3 d-flex flex-wrap" id="products" ></div> 
             </section>            
         </div>
 
