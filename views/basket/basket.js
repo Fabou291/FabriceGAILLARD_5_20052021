@@ -1,8 +1,8 @@
-import config                   from '../../src/js/config.js';
-import {addHeader, addFooter, getDateAWeekLater} from '../../src/js/functions.js';
-import ProductBasket            from '../../src/js/productBasket.js';
-import Basket                   from '../../src/js/basket.js';
-import DeliveryContact          from '../../src/js/deliveryContact.js';
+import config                                       from '../../src/js/config.js';
+import {addHeader, addFooter, getDateAWeekLater}    from '../../src/js/functions.js';
+import ProductBasket                                from '../../src/js/productBasket.js';
+import Basket                                       from '../../src/js/basket.js';
+import DeliveryContact                              from '../../src/js/deliveryContact.js';
 
 let listProductOnStorage = JSON.parse(localStorage.getItem(config.storageName.basket)) || [];
 let deliveryContactOnStorage = JSON.parse(sessionStorage.getItem(config.storageName.deliveryContact)) || [];
@@ -230,7 +230,7 @@ function addEventSubmitFormBasket(){
             event.preventDefault();
 
             let modal = new bootstrap.Modal(document.getElementById('modalDeliveryContact'));
-                modal.show()
+                modal.show();
         },false);
     })
 }
@@ -245,8 +245,6 @@ function addEventInputQuantity(){
 
         listSelectQuantity.forEach(node => {
             node.addEventListener('change',function(event){
-                event.stopPropagation();
-
                 basket.update(
                     [...listSelectQuantity].findIndex( node => node === this ), 
                     { quantity : this.value } 
@@ -285,7 +283,7 @@ function addEventCheckBox(){
  * @description Ajout de l'evenement "click" au bouton #deseclectAll
  */
 function addEventSelectAll(){
-    document.querySelector('#deselectAll').addEventListener('click',function(event){
+    document.querySelector('#deselectAll').addEventListener('click',function(){
 
         let allSelected = (basket.areAllSelected()) ? false : true ;
         
@@ -306,10 +304,10 @@ function addEventSelectAll(){
  */
 function addEventDelete(){
     listItemShop        = document.querySelectorAll('.itemShop');
-    listDeleteButton    = document.querySelectorAll('.deleteItemShop')
+    listDeleteButton    = document.querySelectorAll('.deleteItemShop');
 
     listDeleteButton.forEach(node => {
-        node.addEventListener('click', function(event){
+        node.addEventListener('click', function(){
             let index = [...listDeleteButton].findIndex(deleteButton => deleteButton === node);
                 basket.remove(index);
                 listItemShop[index].parentNode.removeChild(listItemShop[index]);
@@ -352,7 +350,7 @@ function addEventSubmitFormDelivery(){
 
                 window.location.href = '../confirm-command/confirm-command.html'                
             })
-            .catch(e => console.error(e))
+            .catch(e => console.error(e));
 
 
         }
@@ -380,7 +378,7 @@ function updateHTMLPriceZone(){
 
     document.querySelectorAll('.total').forEach(node => node.innerHTML = innerHTML );
 
-    updateSubmitButtonFormBasket()
+    updateSubmitButtonFormBasket();
 }
 
 /**
@@ -403,7 +401,7 @@ function getFormDeliveryValues(){
     return [...formDelivery.querySelectorAll('input, textarea')].reduce((accumulator, node) => ({
         ...accumulator,
         [node.name] : node.value
-    }), {})
+    }), {});
 }
 
 /**
@@ -421,7 +419,7 @@ async function postOrder(body){
           },
         body : JSON.stringify(body)
     });
-    if(!response.ok) throw 'Erreur lors de la requete POST'
+    if(!response.ok) throw 'Erreur lors de la requete POST';
     return await response.json();
 }
 

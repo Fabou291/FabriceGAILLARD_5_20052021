@@ -18,10 +18,33 @@ export default class DeliveryContact{
 
     /**
      * @constructor
-     * @param {Object[]} listDeliveryContact 
+     * @param {Object} deliveryContact 
      */
-    constructor(listDeliveryContact){
-        Object.assign(this, listDeliveryContact);
+    constructor(deliveryContact){
+        if(!this.isValidDeliveryContact(deliveryContact)) throw "L'objet passé en argument au constructeur de la classe deliveryContact n'est pas correct";
+        Object.assign(this, deliveryContact);
+    }
+
+    /**
+     * @method isValid
+     * @description Vérifie si l'objet passé correspond aux attentes. (Renvoie true ou false)
+     * @param {Object} product 
+     * @returns {bool}
+     */
+     isValidDeliveryContact(deliveryContact){
+        if(!(typeof deliveryContact === 'object' ) || deliveryContact === null ) return false;
+        if(deliveryContact.length == 0) return true;
+        return (    typeof deliveryContact.firstName           === 'string' &&
+                    typeof deliveryContact.lastName            === 'string' &&
+                    typeof deliveryContact.adressLine1         === 'string' &&
+                    typeof deliveryContact.adressLine2         === 'string' &&
+                    typeof deliveryContact.city                === 'string' &&
+                    typeof deliveryContact.zipCode             === 'string' &&
+                    typeof deliveryContact.phoneNumber         === 'string' &&
+                    typeof deliveryContact.email               === 'string' &&
+                    typeof deliveryContact.moreInfo            === 'string' &&
+                    typeof deliveryContact.secureBuildingCode  === 'string'
+                ); 
     }
 
     /**
@@ -45,7 +68,7 @@ export default class DeliveryContact{
         return {
             firstName   : this.firstName,
             lastName    : this.firstName,
-            address      : this.getAdressOneLine(),
+            address     : this.getAdressOneLine(),
             city        : this.city,
             email       : this.email
         }

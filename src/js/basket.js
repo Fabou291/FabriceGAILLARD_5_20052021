@@ -1,4 +1,5 @@
 import config from '../../src/js/config.js';
+import ProductBasket from './productBasket.js';
 
 /**
  * @Class Basket
@@ -14,8 +15,26 @@ export default class Basket {
      * @param {ProductBasket[]} listProduct 
      */
     constructor(listProduct){
+        if(!(typeof listProduct === 'object' ) || listProduct === null ) return false;
+        if(!this.isValidBasket(listProduct)) throw "L'argument au constructeur de la classe Basket n'est pas correct";
         this.listProduct = listProduct;
     }
+
+    /**
+     * @method isValid
+     * @description Vérifie si l'array passé en argument est valide
+     * @param {Object} product 
+     * @returns {bool}
+     */
+     isValidBasket(listProduct){
+        let valid = true;
+        if(typeof listProduct !== 'object') return false;
+        listProduct.forEach(product => {
+            if(!(product instanceof  ProductBasket)) valid = false;
+        });
+        return valid;
+    }
+
 
     /**
      * @method add
@@ -134,7 +153,7 @@ export default class Basket {
 
     /**
      * @method getFormatedSelectedTotal
-     * @description Récupère le prix total formaté des produits selectionné
+     * @description Récupère le prix total formaté des produits selectionnés
      * @returns {string}
      */
     getFormatedSelectedTotal(){

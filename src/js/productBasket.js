@@ -5,9 +5,9 @@ import Product from './product.js';
  */
 export default class ProductBasket extends Product{
 
-    quantity = '';
-    version = '';
-    selected = true;
+    quantity    = 0;
+    version     = 0;
+    selected    = true;
 
     /**
      * @constructor
@@ -20,13 +20,30 @@ export default class ProductBasket extends Product{
             description   : ProductBasket.description,
             price         : ProductBasket.price,
             imageUrl      : ProductBasket.imageUrl,
-            lenses        : ProductBasket.lenses,
+            lenses        : ProductBasket.lenses
         });
-        this.quantity   = parseInt(ProductBasket.quantity);
-        this.version    = parseInt(ProductBasket.version);
+
+        if(!this.isValidProductBasket(ProductBasket)) throw "L'objet passé en argument au constructeur de la classe ProductBasket n'est pas correct";
+
+        this.quantity   = ProductBasket.quantity;
+        this.version    = ProductBasket.version;
         this.selected   = ProductBasket.selected;
     }
     
+    /**
+     * @method isValid
+     * @description Vérifie si l'objet passé correspond aux attentes. (Renvoie true ou false)
+     * @param {Object} product 
+     * @returns {bool}
+     */
+     isValidProductBasket(ProductBasket){
+        if(!(typeof ProductBasket === 'object' ) || ProductBasket === null ) return false;
+        return (    typeof ProductBasket.quantity        === 'number' &&
+                    typeof ProductBasket.version         === 'number' &&
+                    typeof ProductBasket.selected        === 'boolean' 
+                ); 
+    }
+
     /**
      * @method getTotal
      * @description Récupère le prix du produit
