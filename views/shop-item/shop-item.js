@@ -14,9 +14,10 @@ let basket = new Basket( listProductOnStorage.map(product => new ProductBasket(p
  * @returns Promesse
  */
 async function fetchProductById(id){
+    if(id === null) throw `_id introuvable` ;
     let response = await fetch(config.serverPath + id);
     if(!response.ok) throw `_id incorrect` ;
-    return await response.json();
+    return await response.json();        
 }
 
 /**
@@ -66,10 +67,7 @@ function addToBasket(product){
  */
 function getUrlParam(param){
     let urlParams = new URLSearchParams(window.location.search);
-    if(!urlParams.has(param)){
-        document.querySelector('#container').innerHTML = getTemplateErrorMessage('Oups il semble que vous n\'ayez pas renseigné de produit pour le voir plus en détail');
-        throw new Error(`Aucun ${param} trouvé`);
-    } 
+    if(!urlParams.has(param)) return null; 
     return urlParams.get(param);        
 }
 
@@ -304,13 +302,17 @@ fetchProductById(getUrlParam('_id'))
 
 })
 .catch(errorMessage => {
-    console.log('Je passe : ' + errorMessage)
+    let container = document.querySelector('#container');
+
     switch(errorMessage){
         case '_id incorrect' :
-            document.querySelector('#container').innerHTML = getTemplateErrorMessage('Oups le produit demandé n\'éxite pas !');
+            container.innerHTML = getTemplateErrorMessage('Oups le produit demandé n\'éxite pas !');
         break;
-        default :
-            console.error('erreur : ' + errorMessage);
+        case '_id introuvable' :
+            container.innerHTML = getTemplateErrorMessage('Oups il semble que vous n\'ayez pas renseigné de produit pour le voir plus en détail');
+        break;
+        default : 
+            container.innerHTML = getTemplateErrorMessage('Oups une erreur interne est survenue');
         break;
     }
 })
