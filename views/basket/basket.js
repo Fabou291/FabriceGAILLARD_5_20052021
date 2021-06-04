@@ -59,7 +59,7 @@ function addDatePrev(){
 
 /**
  * @function displayDeliveryForm
- * @description Affiche le formulaire de contact pour la livraison (prérempli ou non)
+ * @description Ajoute le formulaire de contact pour la livraison (prérempli ou non)
  */
 function displayDeliveryForm(){
     document.querySelector('#modalContainer').innerHTML = 
@@ -221,18 +221,25 @@ function defineVariablesDOM(){
 }
 
 /**
- * @function defineVariablesDOM
- * @description Défini l'ensemble des variables en lien avec le DOM
+ * @function addEventSubmitFormBasket
+ * @description Ajout de l'evenement "click" au button permettant la validation du formulaire formBasket (permettant la commande)
  */
 function addEventSubmitFormBasket(){
     formBasket.querySelectorAll('#formBasket button[type="submit"]').forEach(button => {
         button.addEventListener('click',function(event){
             event.preventDefault();
-
-            let modal = new bootstrap.Modal(document.getElementById('modalDeliveryContact'));
-                modal.show();
+            showModalDeliveryContact()
         },false);
     })
+}
+
+/**
+ * @function showModalDeliveryContact
+ * @description Fait apparaitre la modal représentant le formulaire de contact pour la livraison
+ */
+function showModalDeliveryContact(){
+    let modal = new bootstrap.Modal(document.getElementById('modalDeliveryContact'));
+    modal.show();
 }
 
 /**
@@ -240,20 +247,19 @@ function addEventSubmitFormBasket(){
  * @description Ajout de l'evenement "change" à tous les input Quantity
  */
 function addEventInputQuantity(){
-
     listSelectQuantity = document.querySelectorAll('#formBasket input[name="quantity[]"]');
-
-        listSelectQuantity.forEach(node => {
-            node.addEventListener('change',function(event){
-                basket.update(
-                    [...listSelectQuantity].findIndex( node => node === this ), 
-                    { quantity : this.value } 
-                );
-                updateHTMLPriceZone();
-            })
-        },false)
-
+    listSelectQuantity.forEach(node => {
+        node.addEventListener('change',function(){
+            basket.update(
+                [...listSelectQuantity].findIndex( node => node === this ), 
+                { quantity : parseInt(this.value) } 
+            );
+            updateHTMLPriceZone();
+        })
+    },false)
 }
+
+
 
 /**
  * @function addEventCheckBox
@@ -327,13 +333,13 @@ function addEventSubmitFormDelivery(){
     document.querySelector('#formDelivery button[type="submit"]').addEventListener('click',function(event){
         event.preventDefault();
 
+        let deliveryConctact = new DeliveryContact(getFormDeliveryValues());
+
+        sessionStorage.setItem( config.storageName.deliveryContact , JSON.stringify(deliveryConctact) );
+
         if(!formDelivery.reportValidity()){
             formDelivery.classList.add('was-validated');
         }else{
-
-            let deliveryConctact = new DeliveryContact(getFormDeliveryValues());
-
-            sessionStorage.setItem( config.storageName.deliveryContact , JSON.stringify(deliveryConctact) );
 
             let objectPost = Object.assign(
                 { contact : deliveryConctact.getPostObject() }, 
@@ -383,7 +389,7 @@ function updateHTMLPriceZone(){
 
 /**
  * @function updateSubmitButtonFormBasket
- * @description Enable ou Disable les boutons de validation du formation du panier en fonction des produits selectionnés ou non 
+ * @description Enable ou Disable les boutons de validation du formulaire du panier en fonction des produits selectionnés ou non 
  */
 function updateSubmitButtonFormBasket(){
     document.querySelectorAll('#formBasket button[type="submit"]').forEach(button => {

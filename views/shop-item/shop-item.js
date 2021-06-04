@@ -4,6 +4,9 @@ import Product from '../../src/js/product.js';
 import ProductBasket from '../../src/js/productBasket.js';
 import Basket from '../../src/js/Basket.js';
 
+let listProductOnStorage = JSON.parse(localStorage.getItem(config.storageName.basket)) || [];
+let basket = new Basket( listProductOnStorage.map(product => new ProductBasket(product)) );
+
 /**
  * @function fetchProductById
  * @description Récupére le produit par l'id "_id" 
@@ -24,31 +27,36 @@ async function fetchProductById(id){
  */
 function setEventAddBasket(product){
     document.querySelector('#addToBasket').addEventListener('click',function(event){
-
         event.preventDefault();
-
-        let listNodeSelect = document.querySelectorAll('#quantity, #version');
-
-        let productBasket = new ProductBasket(
-            Object.assign(
-                {...product},
-                [...listNodeSelect].reduce( (accumulator, node) => ({ ...accumulator, [node.id] : parseInt(node.value) }), {selected : true} )
-            )
-        );
-
-        
-        let listProductOnStorage = JSON.parse(localStorage.getItem(config.storageName.basket)) || [];
-
-        let basket = new Basket( listProductOnStorage.map(product => new ProductBasket(product)) );
-            basket.add(productBasket);
-
-        localStorage.setItem(config.storageName.basket, JSON.stringify(basket.listProduct));
-       
-        updateModal(productBasket);
-        modal.show();
-        
+        addToBasket(product);
     },false)
 }
+
+
+/**
+ * @function addToBasket
+ * @description Ajout d'un produit au panier
+ * @param {Product}
+ */
+function addToBasket(product){
+
+    let listNodeSelect = document.querySelectorAll('#quantity, #version');
+
+    let productBasket = new ProductBasket(
+        Object.assign(
+            {...product},
+            [...listNodeSelect].reduce( (accumulator, node) => ({ ...accumulator, [node.id] : parseInt(node.value) }), {selected : true} )
+        )
+    );
+
+    basket.add(productBasket);
+
+    localStorage.setItem(config.storageName.basket, JSON.stringify(basket.listProduct));
+   
+    updateModal(productBasket);
+    modal.show();
+}
+
 
 /**
  * @function getUrlParam
@@ -58,8 +66,11 @@ function setEventAddBasket(product){
  */
 function getUrlParam(param){
     let urlParams = new URLSearchParams(window.location.search);
-    if(!urlParams.has(param)) throw `Aucun "${param}" trouvé`;
-    return urlParams.get(param);
+    if(!urlParams.has(param)){
+        document.querySelector('#container').innerHTML = getTemplateErrorMessage('Oups il semble que vous n\'ayez pas renseigné de produit pour le voir plus en détail');
+        throw new Error(`Aucun ${param} trouvé`);
+    } 
+    return urlParams.get(param);        
 }
 
 /**
@@ -293,12 +304,13 @@ fetchProductById(getUrlParam('_id'))
 
 })
 .catch(errorMessage => {
+    console.log('Je passe : ' + errorMessage)
     switch(errorMessage){
         case '_id incorrect' :
             document.querySelector('#container').innerHTML = getTemplateErrorMessage('Oups le produit demandé n\'éxite pas !');
         break;
         default :
-            console.error(errorMessage);
+            console.error('erreur : ' + errorMessage);
         break;
     }
 })
